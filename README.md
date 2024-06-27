@@ -47,7 +47,6 @@ To run this project locally, follow these steps:
    ```bash
    POST /api/test/create
    Request Body:
-   ```bash
    {
   "question_id": 1,
   "question_text": "What is the capital of France?",
@@ -66,7 +65,6 @@ To run this project locally, follow these steps:
    ```bash
    PUT /api/test/update/{id}
    Request Body:
-   ```bash
    {
   "question_text": "What is the capital of Germany?",
   "options": ["Paris", "London", "Berlin"],
