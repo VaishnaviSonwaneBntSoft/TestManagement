@@ -67,8 +67,7 @@ public class TestManagementControllerTests {
 
       
         ResponseEntity<SuccessResponse> responseEntity = controller.GetAllQuestionsData();
-
-        // Verify the response
+        
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("All Data Retrived", responseEntity.getBody().getMessage());
         assertEquals(testDataList, responseEntity.getBody().getModuleData());
