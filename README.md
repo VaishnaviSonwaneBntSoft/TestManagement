@@ -42,47 +42,34 @@ To run this project locally, follow these steps:
 
 ## API Endpoints
 
-1. **Create MCQ Question:**
+### CategoryController
 
-   ```bash
-   POST /api/test/create
-   
-   Request Body:
-   {
-  "question_id": 1,
-  "question_text": "What is the capital of France?",
-  "options": ["Paris", "London", "Berlin"],
-  "correct_answer": "Paris"
-  }
+Handles CRUD operations for managing categories.
 
+- **POST /api/category/create**: Create a new category.
+- **GET /api/category/getall**: Retrieve all categories.
+- **GET /api/category/getbyid/{category_id}**: Retrieve a category by ID.
+- **PUT /api/category/update/{category_id}**: Update a category.
+- **DELETE /api/category/delete/{category_id}**: Delete a category.
 
-2. **Get All Questions:**
+### QuestionController
 
-   ```bash
-   GET /api/test/getdata
+Manages operations related to questions.
 
-3. **Update Question:**
+- **POST /api/test/create**: Create a new question.
+- **GET /api/test/getdata**: Retrieve all questions.
+- **GET /api/test/getbyId/{id}**: Retrieve a question by ID.
+- **PUT /api/test/update/{id}**: Update a question.
+- **DELETE /api/test/delete/{id}**: Delete a question.
 
-   ```bash
-   PUT /api/test/update/{id}
-   
-   Request Body:
-   {
-  "question_text": "What is the capital of Germany?",
-  "options": ["Paris", "London", "Berlin"],
-  "correct_answer": "Berlin"
-  }
+### SubCategoryController
 
+Handles CRUD operations for managing subcategories.
 
-4. **Get Question by ID:**
-
-     ```bash
-     GET /api/test/getbyId/{id}
-     
-5. **Delete Question:**
-
-   ```bash
-   DELETE /api/test/delete/{id}
+- **POST /api/subcategory/create**: Create a new subcategory.
+- **GET /api/subcategory/getall**: Retrieve all subcategories.
+- **GET /api/subcategory/getbyid/{subcat_id}**: Retrieve a subcategory by ID.
+- **PUT /api/subcategory/update/{subcat_id}**: Update a subcategory.
 
 ##  Error Handling
 
