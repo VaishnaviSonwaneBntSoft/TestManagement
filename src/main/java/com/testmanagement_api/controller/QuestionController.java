@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 import com.testmanagement_api.entity.TestModel;
-import com.testmanagement_api.exceptionhandler.DuplicatedDataException;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.TestManagementService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Slf4j
 @RestController
 @RequestMapping("/api/test")
-public class TestManagementController {
+public class QuestionController {
 
     @Autowired
     TestManagementService tService;
@@ -35,14 +34,17 @@ public class TestManagementController {
         log.info("Received request to create a new MCQ question: {}", model);
           try{
             tService.CreateMcqQuestion(model);
+            SuccessResponse successResponse = new SuccessResponse("New Question Saved" , 201 , model);
+            log.info("Successfully created new MCQ question: {}", model);
+            return new ResponseEntity<SuccessResponse>(successResponse , HttpStatus.CREATED);
           }
-          catch(DuplicatedDataException exception)
+          catch(Exception exception)
           {
             log.error( exception.getMessage(), exception);
+            SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,exception);
+            return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
           }
-        SuccessResponse successResponse = new SuccessResponse("New Question Saved" , 201 , model);
-        log.info("Successfully created new MCQ question: {}", model);
-        return new ResponseEntity<SuccessResponse>(successResponse , HttpStatus.CREATED);
+       
     }
 
     @GetMapping("/getdata")

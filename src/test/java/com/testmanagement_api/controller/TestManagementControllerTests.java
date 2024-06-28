@@ -24,13 +24,13 @@ public class TestManagementControllerTests {
     private TestManagementService tService;
 
     @InjectMocks
-    private TestManagementController controller;
+    private QuestionController controller;
 
-    @BeforeEach
-    public void init() {
-        MockitoAnnotations.initMocks(this);
+     @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
-
+    
     @Test
     public void testCreateMcqQuestion() {
        
@@ -67,7 +67,7 @@ public class TestManagementControllerTests {
 
       
         ResponseEntity<SuccessResponse> responseEntity = controller.GetAllQuestionsData();
-        
+
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("All Data Retrived", responseEntity.getBody().getMessage());
         assertEquals(testDataList, responseEntity.getBody().getModuleData());
@@ -114,8 +114,6 @@ public class TestManagementControllerTests {
         TestModel testModel = new TestModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Updated question");
-
-        doNothing().when(tService).deleteQuestionDataById(testModel.getQuestion_id());
 
         ResponseEntity<SuccessResponse> responseEntity = controller.deleteStudent(testModel.getQuestion_id());
 

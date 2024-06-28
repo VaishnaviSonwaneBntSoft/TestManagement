@@ -6,10 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.testmanagement_api.dao.SubCategoryRepository;
 import com.testmanagement_api.dao.TestManagementRepository;
 import com.testmanagement_api.entity.TestModel;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicatedDataException;
+import com.testmanagement_api.exceptionhandler.SubcategoryNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,12 +22,21 @@ public class TestManagementService {
     @Autowired
     TestManagementRepository tRepository;
 
+    @Autowired
+    SubCategoryRepository subCategoryRepository;
+
     public TestModel CreateMcqQuestion(TestModel model)
     {
         boolean result = tRepository.existsById(model.getQuestion_id());
         if(!result)
         {
-            return tRepository.save(model);
+            if(subCategoryRepository.existsById(model.getSubcategory().getSubcategoryId()))
+            {
+                return tRepository.save(model);
+            }else{
+                SubcategoryNotFoundException exception = new SubcategoryNotFoundException("Subcategory Not Found Which Foregin In Use");
+                throw exception;
+            }
         }else{
             log.error("Data Already Present By Given Id");
             DuplicatedDataException exception = new DuplicatedDataException("Data Already Present By Given Id");
@@ -44,7 +55,13 @@ public class TestManagementService {
         boolean result = tRepository.existsById(question_id);
         if(result)
         {
-            return tRepository.save(model);
+            if(subCategoryRepository.existsById(model.getSubcategory().getSubcategoryId()))
+            {
+                return tRepository.save(model);
+            }else{
+                SubcategoryNotFoundException exception = new SubcategoryNotFoundException("Subcategory Not Found Which Foregin In Use");
+                throw exception;
+            }
         }else{
             
             DataNotFoundException exception = new DataNotFoundException("Data Not Found For Provided ID");
