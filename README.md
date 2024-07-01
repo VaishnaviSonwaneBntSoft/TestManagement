@@ -30,7 +30,7 @@ To run this project locally, follow these steps:
    
 2. **Set up the database:**
    
-   Ensure you have MySQL installed locally or configure your database settings in application.properties.
+   Ensure you have PostgreSQL installed locally or configure your database settings in application.properties.
 
 3. **Build and run the application:**
     ```bash
