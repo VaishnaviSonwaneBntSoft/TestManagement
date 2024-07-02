@@ -274,143 +274,125 @@ public class TestManagementServiceTests {
         });
     }
 
-    // @Test
-    // public void testUploadBulkQuestions_ValidFile() throws IOException, EncryptedDocumentException {
+    @Test
+    public void testUploadBulkQuestions_ValidFile() throws IOException, EncryptedDocumentException {
      
-    //     String filePath = "c:/Users/vaishnavi.sonawane/Downloads/QuestionBank.xlsx";
-    //     File file = new File(filePath);
+        String filePath = "c:/Users/vaishnavi.sonawane/Downloads/QuestionBank.xlsx";
+        File file = new File(filePath);
 
-    //     if (!file.exists()) {
-    //         throw new RuntimeException("File not found: " + filePath);
-    //     }
+        if (!file.exists()) {
+            throw new RuntimeException("File not found: " + filePath);
+        }
 
-    //      FileInputStream inputStream = new FileInputStream(file);
-    //     MockMultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
+         FileInputStream inputStream = new FileInputStream(file);
+        MockMultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
 
-    //     // Mock behavior for Workbook methods
-    //     Sheet mockSheet = mock(Sheet.class);
-    //     when(mockWorkbook.getSheetAt(0)).thenReturn(mockSheet);
+        Sheet mockSheet = mock(Sheet.class);
+        when(mockWorkbook.getSheetAt(0)).thenReturn(mockSheet);
 
-    //     // Prepare mock rows for sheet
-    //     List<Row> mockRows = createMockRows();
-    //     when(mockSheet.iterator()).thenReturn(mockRows.iterator());
+        List<Row> mockRows = createMockRows();
+        when(mockSheet.iterator()).thenReturn(mockRows.iterator());
 
-    //     // Execute the method
-    //     questionService.uploadBulkQuestions(multipartFile);
+        questionService.uploadBulkQuestions(multipartFile);
 
-    //     // Verify saveAll method is called on repository
-    //     verify(tRepository, times(1)).saveAll(anyList());
-    // }
+        verify(tRepository, times(1)).saveAll(anyList());
+    }
 
     @Test
     public void testUploadBulkQuestions_InvalidFileExtension() throws IOException, EncryptedDocumentException {
-        // Prepare invalid file (not ending with .xlsx)
+       
         InputStream inputStream = getClass().getResourceAsStream("/test-data/questions_invalid.xlsx");
         MockMultipartFile multipartFile = new MockMultipartFile("questions_invalid.xlsx", inputStream);
 
-        // Execute the method and assert for exception
         try {
             questionService.uploadBulkQuestions(multipartFile);
         } catch (Exception e) {
             assert e instanceof IllegalArgumentException;
         }
 
-        // Verify saveAll method is never called on repository
         verify(tRepository, never()).saveAll(anyList());
     }
 
     @Test
 public void testUploadBulkQuestions_DuplicateQuestions() throws IOException, EncryptedDocumentException {
-    // Prepare file with duplicate questions
+   
+    
     InputStream inputStream = getClass().getResourceAsStream("/test-data/questions_duplicate.xlsx");
     MockMultipartFile multipartFile = new MockMultipartFile("questions_duplicate.xlsx", inputStream);
 
-    // Mock behavior for tRepository.existsByQuestion()
     when(tRepository.existsByQuestion(anyString())).thenReturn(true);
 
-    // Execute the method and assert for DuplicateEntries exception
     try {
         questionService.uploadBulkQuestions(multipartFile);
         fail("Expected DuplicateEntries exception was not thrown");
     } catch (DuplicateEntries e) {
-        // Verify the exception message or content
+      
         String exceptionMessage = e.getMessage();
         assertTrue(exceptionMessage.contains("Duplicate Question 1"));
         assertTrue(exceptionMessage.contains("Duplicate Question 2"));
     }
 
-    // Verify saveAll method is never called on repository
     verify(tRepository, never()).saveAll(anyList());
 }
 
     @Test
     public void testUploadBulkQuestions_CategoryNotFound() throws IOException, EncryptedDocumentException {
-        // Prepare file with non-existent category
+      
         InputStream inputStream = getClass().getResourceAsStream("/test-data/questions_category_not_found.xlsx");
         MockMultipartFile multipartFile = new MockMultipartFile("questions_category_not_found.xlsx", inputStream);
 
-        // Mock behavior for categoryService.getCategoryInstance()
         when(categoryService.getCategoryInstance(anyString())).thenReturn(null);
 
-        // Execute the method and assert for CategoryNotFoundException
         try {
             questionService.uploadBulkQuestions(multipartFile);
         } catch (CategoryNotFoundException e) {
             assert e.getMessage().equals("Given Category Not Present");
         }
 
-        // Verify saveAll method is never called on repository
         verify(tRepository, never()).saveAll(anyList());
     }
 
     @Test
     public void testUploadBulkQuestions_SubcategoryNotFound() throws IOException, EncryptedDocumentException {
-        // Prepare file with valid category but non-existent subcategory
+      
         InputStream inputStream = getClass().getResourceAsStream("/test-data/questions_subcategory_not_found.xlsx");
         MockMultipartFile multipartFile = new MockMultipartFile("questions_subcategory_not_found.xlsx", inputStream);
 
-        // Mock behavior for subCategoryService.getSubCategoryInstance()
         when(subCategoryService.getSubCategoryInstance(anyString(), anyLong())).thenReturn(null);
 
-        // Execute the method and assert for SubcategoryNotFoundException
         try {
             questionService.uploadBulkQuestions(multipartFile);
         } catch (SubcategoryNotFoundException e) {
             assert e.getMessage().equals("Not Found Subcategory with foriegn key of given category");
         }
 
-        // Verify saveAll method is never called on repository
         verify(tRepository, never()).saveAll(anyList());
     }
 
     @Test
     public void testUploadBulkQuestions_IOError() throws IOException, EncryptedDocumentException {
-        // Prepare file with valid data but causing an IOException (simulate file read error)
+      
         InputStream inputStream = mock(InputStream.class);
         MockMultipartFile multipartFile = new MockMultipartFile("questions.xlsx", inputStream);
 
-        // Mock behavior for WorkbookFactory.create()
         when(WorkbookFactory.create(any(InputStream.class))).thenThrow(new IOException("Simulated IOException"));
 
-        // Execute the method and assert for IOException
         try {
             questionService.uploadBulkQuestions(multipartFile);
         } catch (IOException e) {
             assert e.getMessage().equals("Simulated IOException");
         }
 
-        // Verify saveAll method is never called on repository
         verify(tRepository, never()).saveAll(anyList());
     }
 
     private List<Row> createMockRows() {
-        // Create mock rows for testing
+      
         List<Row> rows = new ArrayList<>();
         Sheet mockSheet = mock(Sheet.class);
         for (int i = 0; i < 3; i++) {
             Row mockRow = mock(Row.class);
 
-            // Mock behavior for Row iterator
             when(mockSheet.getRow(i)).thenReturn(mockRow);
             when(mockRow.getRowNum()).thenReturn(i);
             when(mockRow.iterator()).thenReturn(createMockCells().iterator());
@@ -421,7 +403,7 @@ public void testUploadBulkQuestions_DuplicateQuestions() throws IOException, Enc
     }
 
     private List<Cell> createMockCells() {
-        // Create mock cells for testing
+       
         List<Cell> cells = new ArrayList<>();
         for (int i = 0; i < 11; i++) {
             Cell mockCell = mock(org.apache.poi.ss.usermodel.Cell.class);
