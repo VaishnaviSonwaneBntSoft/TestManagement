@@ -67,4 +67,12 @@ public class CategoryService {
             throw exception;
         }
     }
+
+    public Category getCategoryInstance(String categoryName)
+    {
+        if(categoryRepository.existsBycategoryName(categoryName))
+            return categoryRepository.getOneByName(categoryName);
+        else
+        return null;
+    }
 }

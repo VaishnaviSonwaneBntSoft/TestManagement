@@ -14,10 +14,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.testmanagement_api.dao.SubCategoryRepository;
-import com.testmanagement_api.dao.TestManagementRepository;
+import com.testmanagement_api.dao.QuestionRepository;
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.entity.Subcategory;
-import com.testmanagement_api.entity.TestModel;
+import com.testmanagement_api.entity.QuestionModel;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicatedDataException;
 import com.testmanagement_api.exceptionhandler.SubcategoryNotFoundException;
@@ -25,13 +25,13 @@ import com.testmanagement_api.exceptionhandler.SubcategoryNotFoundException;
 public class TestManagementServiceTests {
 
     @Mock
-    private TestManagementRepository tRepository;
+    private QuestionRepository tRepository;
 
     @Mock
     private SubCategoryRepository subCategoryRepository;
 
     @InjectMocks
-    private TestManagementService service;
+    private QuestionService service;
 
     @BeforeEach
     public void setUp() {
@@ -41,7 +41,7 @@ public class TestManagementServiceTests {
     @Test
     public void testCreateMcqQuestion_Success() {
       
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
         
@@ -53,7 +53,7 @@ public class TestManagementServiceTests {
         when(subCategoryRepository.existsById(1L)).thenReturn(true);
         when(tRepository.save(testModel)).thenReturn(testModel);
 
-        TestModel result = service.CreateMcqQuestion(testModel);
+        QuestionModel result = service.CreateMcqQuestion(testModel);
 
         assertNotNull(result);
         assertEquals(testModel.getQuestion_id(), result.getQuestion_id());
@@ -63,7 +63,7 @@ public class TestManagementServiceTests {
     @Test
     public void testCreateMcqQuestion_SubcategoryNotFound() {
    
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
         
@@ -83,7 +83,7 @@ public class TestManagementServiceTests {
     @Test
     public void testCreateMcqQuestion_DuplicateQuestionId() {
         
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
         
@@ -97,12 +97,12 @@ public class TestManagementServiceTests {
     @Test
     public void testGetAllQuestionsData() {
      
-        List<TestModel> testDataList = new ArrayList<>();
-        TestModel testModel1 = new TestModel();
+        List<QuestionModel> testDataList = new ArrayList<>();
+        QuestionModel testModel1 = new QuestionModel();
         testModel1.setQuestion_id(1L);
         testModel1.setQuestion("Question 1");
 
-        TestModel testModel2 = new TestModel();
+        QuestionModel testModel2 = new QuestionModel();
         testModel2.setQuestion_id(2L);
         testModel2.setQuestion("Question 2");
 
@@ -111,7 +111,7 @@ public class TestManagementServiceTests {
 
         when(tRepository.findAll()).thenReturn(testDataList);
 
-        List<TestModel> result = service.GetAllQuestionsData();
+        List<QuestionModel> result = service.GetAllQuestionsData();
 
         assertEquals(2, result.size());
         assertEquals(testDataList, result);
@@ -120,12 +120,12 @@ public class TestManagementServiceTests {
     @Test
     public void testUpdateQuestionData_Success() {
        
-        TestModel testModelToUpdate = new TestModel();
+        QuestionModel testModelToUpdate = new QuestionModel();
         testModelToUpdate.setQuestion_id(1L);
         testModelToUpdate.setQuestion("Updated question");
         testModelToUpdate.setSubcategory(new Subcategory(101L, new Category(), "Something", "Something"));
 
-        TestModel existingTestModel = new TestModel();
+        QuestionModel existingTestModel = new QuestionModel();
         existingTestModel.setQuestion_id(1L);
         existingTestModel.setQuestion("Original question");
         existingTestModel.setSubcategory(new Subcategory(101L, new Category(), "Something", "Something"));
@@ -135,7 +135,7 @@ public class TestManagementServiceTests {
         when(tRepository.existsById(existingTestModel.getSubcategory().getSubcategoryId())).thenReturn(true);
         when(tRepository.save(testModelToUpdate)).thenReturn(testModelToUpdate);
        
-        TestModel result = service.updateQuestionData(testModelToUpdate, 1L);
+        QuestionModel result = service.updateQuestionData(testModelToUpdate, 1L);
 
 
         assertNotNull(result);
@@ -145,12 +145,12 @@ public class TestManagementServiceTests {
     @Test
     public void testUpdateQuestionData_SubcategoryNotFound() {
      
-        TestModel testModelToUpdate = new TestModel();
+        QuestionModel testModelToUpdate = new QuestionModel();
         testModelToUpdate.setQuestion_id(1L);
         testModelToUpdate.setQuestion("Updated question");
         testModelToUpdate.setSubcategory(new Subcategory(101L, new Category(), "Something", "Something"));
 
-        TestModel existingTestModel = new TestModel();
+        QuestionModel existingTestModel = new QuestionModel();
         existingTestModel.setQuestion_id(1L);
         existingTestModel.setQuestion("Original question");
 
@@ -164,7 +164,7 @@ public class TestManagementServiceTests {
     @Test
     public void testUpdateQuestionData_QuestionNotFound() {
        
-        TestModel testModelToUpdate = new TestModel();
+        QuestionModel testModelToUpdate = new QuestionModel();
         testModelToUpdate.setQuestion_id(1L);
         testModelToUpdate.setQuestion("Updated question");
 
@@ -178,14 +178,14 @@ public class TestManagementServiceTests {
     @Test
     public void testGetQuestionDataById_Success() {
        
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
 
         when(tRepository.existsById(1L)).thenReturn(true);
         when(tRepository.findById(1L)).thenReturn(Optional.of(testModel));
 
-        Optional<TestModel> result = service.getQuestionDataById(1L);
+        Optional<QuestionModel> result = service.getQuestionDataById(1L);
 
         assertTrue(result.isPresent());
         assertEquals(testModel.getQuestion(), result.get().getQuestion());

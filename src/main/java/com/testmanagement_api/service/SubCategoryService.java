@@ -4,14 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-
-import com.testmanagement_api.dao.CategoryRepository;
 import com.testmanagement_api.dao.SubCategoryRepository;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.exceptionhandler.CategoryNotFoundException;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicateSubCategoryEntry;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class SubCategoryService {
 
@@ -78,6 +79,18 @@ public class SubCategoryService {
             DataNotFoundException exception = new DataNotFoundException("Id Not Found");
             throw exception;
         }
+    }
+
+    public Subcategory getSubCategoryInstance(String subCatgeoryName , long category_id)
+    {   log.info("Id From returned instance of subcategory is {}",category_id);//0
+   
+        Subcategory resultSubcategory = subCategoryRepository.getOneBysubCategoryName(subCatgeoryName);
+        log.info("Id from which is present in subcategory {}", resultSubcategory.getCategory().getCategoryId());
+       
+        if(resultSubcategory.getCategory().getCategoryId()==category_id)
+            return resultSubcategory;
+        else
+        return null;
     }
 
 }

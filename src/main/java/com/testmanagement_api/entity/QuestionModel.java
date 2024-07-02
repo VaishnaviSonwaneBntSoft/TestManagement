@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Component
 @Table(name = "mcq_question")
-public class TestModel {
+public class QuestionModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "testinfo_seq")
@@ -34,7 +34,7 @@ public class TestModel {
     private Subcategory subcategory;
 
     @Column(name = "question")
-    private String Question;
+    private String question;
 
     @Column(name = "option_one")
     private String Option_one;

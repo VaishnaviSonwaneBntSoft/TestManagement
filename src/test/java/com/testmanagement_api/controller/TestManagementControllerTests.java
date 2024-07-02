@@ -14,14 +14,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.testmanagement_api.entity.TestModel;
+import com.testmanagement_api.entity.QuestionModel;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
-import com.testmanagement_api.service.TestManagementService;
+import com.testmanagement_api.service.QuestionService;
 
 public class TestManagementControllerTests {
 
     @Mock
-    private TestManagementService tService;
+    private QuestionService tService;
 
     @InjectMocks
     private QuestionController controller;
@@ -34,7 +34,7 @@ public class TestManagementControllerTests {
     @Test
     public void testCreateMcqQuestion() {
        
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
 
@@ -50,12 +50,12 @@ public class TestManagementControllerTests {
     @Test
     public void testGetAllQuestionsData() {
        
-        List<TestModel> testDataList = new ArrayList<>();
-        TestModel testModel = new TestModel();
+        List<QuestionModel> testDataList = new ArrayList<>();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
 
-        TestModel testModel2 = new TestModel();
+        QuestionModel testModel2 = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
 
@@ -76,11 +76,11 @@ public class TestManagementControllerTests {
     @Test
     public void testUpdateQuestionData() {
        
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Updated question");
 
-        TestModel testModel2 = new TestModel();
+        QuestionModel testModel2 = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Sample question");
 
@@ -96,7 +96,7 @@ public class TestManagementControllerTests {
     @Test
     public void testGetQuestionDataById() {
 
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Updated question");
 
@@ -111,11 +111,11 @@ public class TestManagementControllerTests {
     @Test
     public void testDeleteQuestionDataById() {
         
-        TestModel testModel = new TestModel();
+        QuestionModel testModel = new QuestionModel();
         testModel.setQuestion_id(1L);
         testModel.setQuestion("Updated question");
 
-        ResponseEntity<SuccessResponse> responseEntity = controller.deleteStudent(testModel.getQuestion_id());
+        ResponseEntity<SuccessResponse> responseEntity = controller.deleteQuestion(testModel.getQuestion_id());
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Question Data Deleted", responseEntity.getBody().getMessage());

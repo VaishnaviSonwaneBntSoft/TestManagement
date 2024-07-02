@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Optional;
-import com.testmanagement_api.entity.TestModel;
+import com.testmanagement_api.entity.QuestionModel;
+import com.testmanagement_api.exceptionhandler.DuplicateEntries;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
-import com.testmanagement_api.service.TestManagementService;
+import com.testmanagement_api.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +30,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class QuestionController {
 
     @Autowired
-    TestManagementService tService;
+    QuestionService tService;
 
     @PostMapping("/create")
-    public ResponseEntity<SuccessResponse> CreateMcqQuestion(@RequestBody TestModel model)
+    public ResponseEntity<SuccessResponse> CreateMcqQuestion(@RequestBody QuestionModel model)
     {
         log.info("Received request to create a new MCQ question: {}", model);
           try{
@@ -51,7 +55,7 @@ public class QuestionController {
     public ResponseEntity<SuccessResponse> GetAllQuestionsData()
     {
         try{
-          List<TestModel> DataList = tService.GetAllQuestionsData();
+          List<QuestionModel> DataList = tService.GetAllQuestionsData();
           SuccessResponse successResponse = new SuccessResponse("All Data Retrived" , 200 , DataList);
           return new ResponseEntity<SuccessResponse>(successResponse , HttpStatus.OK);
         }
@@ -64,10 +68,10 @@ public class QuestionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SuccessResponse> updateQuestionData(@RequestBody TestModel model , @PathVariable("id") long Question_id)
+    public ResponseEntity<SuccessResponse> updateQuestionData(@RequestBody QuestionModel model , @PathVariable("id") long Question_id)
     { 
         try{
-          TestModel model2 = tService.updateQuestionData(model, Question_id);
+          QuestionModel model2 = tService.updateQuestionData(model, Question_id);
            SuccessResponse sResponse = new SuccessResponse("Question Data Updated", 200, model2);
             return new ResponseEntity<SuccessResponse>(sResponse, HttpStatus.OK);
         }
@@ -83,7 +87,7 @@ public class QuestionController {
     public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("id") long Question_id)
     {
         try{
-          Optional<TestModel> model = tService.getQuestionDataById(Question_id);
+          Optional<QuestionModel> model = tService.getQuestionDataById(Question_id);
           SuccessResponse succsesResponse = new SuccessResponse("Data Retrived by Id",200,model);
           return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.OK);
         }
@@ -97,7 +101,7 @@ public class QuestionController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SuccessResponse> deleteStudent(@PathVariable("id") long Question_id)
+    public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("id") long Question_id)
     {   
        try{
         tService.deleteQuestionDataById(Question_id);
@@ -111,6 +115,26 @@ public class QuestionController {
        }
     }
 
-
+    @PostMapping("/upload")
+   public ResponseEntity<SuccessResponse> uploadBulkQuestions(@RequestParam("file") MultipartFile file)
+   {
+      try{
+        tService.uploadBulkQuestions(file);
+        SuccessResponse succsesResponse = new SuccessResponse("Question Data Uploaded", 200,null);
+        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.OK);
+      }
+      catch(DuplicateEntries exception)
+      {
+        log.error(exception.getMessage(), exception);
+        SuccessResponse succsesResponse = new SuccessResponse("Duplicate Questions Found In Excel Sheet", 400,exception.queList);
+        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+      }
+      catch(Exception exception)
+      {
+        log.error(exception.getMessage(), exception);
+        SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,null);
+        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+      }
+   }
     
 }
