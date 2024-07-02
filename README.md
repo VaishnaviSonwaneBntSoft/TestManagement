@@ -4,11 +4,9 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 
 ## Features
 
-- **Create MCQ Question:** Endpoint to create a new MCQ question.
-- **Get All Questions:** Endpoint to fetch all existing MCQ questions.
-- **Update Question:** Endpoint to update an existing MCQ question by ID.
-- **Get Question by ID:** Endpoint to fetch a specific MCQ question by its ID.
-- **Delete Question:** Endpoint to delete an existing MCQ question by ID.
+- **CRUD operations for managing all curd api
+- **Bulk upload of questions from an Excel file
+- **Error handling for duplicate entries and other exceptions
 
 ## Technologies Used
 
@@ -61,6 +59,7 @@ Manages operations related to questions.
 - **GET /api/test/getbyId/{id}**: Retrieve a question by ID.
 - **PUT /api/test/update/{id}**: Update a question.
 - **DELETE /api/test/delete/{id}**: Delete a question.
+- **POST /api/test/upload**: Uploads bulk data.
 
 ### SubCategoryController
 
