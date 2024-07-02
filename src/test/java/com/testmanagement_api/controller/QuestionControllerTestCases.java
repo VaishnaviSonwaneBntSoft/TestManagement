@@ -1,9 +1,12 @@
 package com.testmanagement_api.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,11 +17,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.testmanagement_api.entity.QuestionModel;
+import com.testmanagement_api.exceptionhandler.DuplicateEntries;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.QuestionService;
 
-public class TestManagementControllerTests {
+public class QuestionControllerTestCases {
 
     @Mock
     private QuestionService tService;
@@ -120,5 +126,64 @@ public class TestManagementControllerTests {
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Question Data Deleted", responseEntity.getBody().getMessage());
     }
+
+
+    @Test
+    public void testUploadBulkQuestions_Success() throws IOException {
+     
+        MultipartFile mockFile = mock(MultipartFile.class);
+        SuccessResponse expectedResponse = new SuccessResponse("Question Data Uploaded", 200, null);
+   
+        doNothing().when(tService).uploadBulkQuestions(mockFile);
+        
+        ResponseEntity<SuccessResponse> response = controller.uploadBulkQuestions(mockFile);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResponse.getMessage(), response.getBody().getMessage());
+        assertEquals(expectedResponse.getStatusCode(), response.getBody().getStatusCode());
+        assertNull(response.getBody().getModuleData());
+
+        verify(tService, times(1)).uploadBulkQuestions(mockFile);
+    }
+
+    @Test
+    public void testUploadBulkQuestions_DuplicateEntries() throws IOException {
+        
+        MultipartFile mockFile = mock(MultipartFile.class);
+        List<String> duplicateList = Arrays.asList("Question 1", "Question 2"); 
+        DuplicateEntries exception = new DuplicateEntries(duplicateList);
+        SuccessResponse expectedResponse = new SuccessResponse("Duplicate Questions Found In Excel Sheet", 400, duplicateList);
+
+        doThrow(exception).when(tService).uploadBulkQuestions(mockFile);
+
+        ResponseEntity<SuccessResponse> response = controller.uploadBulkQuestions(mockFile);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(expectedResponse.getMessage(), response.getBody().getMessage());
+        assertEquals(expectedResponse.getStatusCode(), response.getBody().getStatusCode());
+        assertEquals(duplicateList, response.getBody().getModuleData());
+
+        verify(tService, times(1)).uploadBulkQuestions(mockFile);
+    }
+
+    @Test
+    public void testUploadBulkQuestions_Exception() throws IOException {
+        
+        MultipartFile mockFile = mock(MultipartFile.class);
+        RuntimeException exception = new RuntimeException("Some error message");
+        SuccessResponse expectedResponse = new SuccessResponse(exception.getMessage(), 400, null);
+
+        doThrow(exception).when(tService).uploadBulkQuestions(mockFile);
+
+        ResponseEntity<SuccessResponse> response = controller.uploadBulkQuestions(mockFile);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals(expectedResponse.getMessage(), response.getBody().getMessage());
+        assertEquals(expectedResponse.getStatusCode(), response.getBody().getStatusCode());
+        assertNull(response.getBody().getModuleData());
+
+        verify(tService, times(1)).uploadBulkQuestions(mockFile);
+    }
 }
+
 

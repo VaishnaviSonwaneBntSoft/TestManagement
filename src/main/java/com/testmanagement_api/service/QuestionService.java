@@ -21,8 +21,10 @@ import com.testmanagement_api.dao.QuestionRepository;
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.entity.QuestionModel;
+import com.testmanagement_api.exceptionhandler.CategoryNotFoundException;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicateEntries;
+
 import com.testmanagement_api.exceptionhandler.DuplicatedDataException;
 import com.testmanagement_api.exceptionhandler.SubcategoryNotFoundException;
 
@@ -126,12 +128,9 @@ public class QuestionService {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
 
-            List<QuestionModel> questions = new ArrayList<QuestionModel>();
-
             List<String> duplicateQuestion = new ArrayList<String>();
-            List<String> duplicCategories = new ArrayList<String>();
-            List<String> duplicSubcategories = new ArrayList<String>();
-
+            List<QuestionModel> questions = new ArrayList<QuestionModel>();
+           
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
                 if (currentRow.getRowNum() == 0) {
@@ -158,21 +157,19 @@ public class QuestionService {
                             {
                                 subcategory.setCategory(returnedCategory);
                                 returnedCategoryId=returnedCategory.getCategoryId();
-                                log.info("Id of Catgeory "+returnedCategoryId);   
+                                log.info("Id of Catgeory "+returnedCategoryId);
+                                
                             }
                             else
-                            {
-                                duplicCategories.add(returnedCategory.getCategoryName());
-                            }         
+                                 new CategoryNotFoundException("Given Category Not Present");
+                                
                         break;
-
                         case 2:
                         Subcategory returnedSubcategory = subCategoryService.getSubCategoryInstance(currentCell.getStringCellValue() , returnedCategoryId);
                             if(returnedSubcategory!=null)
                                 testModel.setSubcategory(returnedSubcategory);
                             else
-                                duplicSubcategories.add(returnedSubcategory.getSubCategoryName());
-                            
+                                throw new SubcategoryNotFoundException("Not Found Subcategory with foriegn key of given category");
 
                         break;
                         case 3:
@@ -219,18 +216,10 @@ public class QuestionService {
         }
         workbook.close();
         if(duplicateQuestion.size()==0)
-            if(duplicCategories.size()==0)
-                if(duplicSubcategories.size()==0)
-                    tRepository.saveAll(questions);
-                else
-                    throw new DuplicateEntries(duplicSubcategories);
-            else
-                throw new DuplicateEntries(duplicCategories);
+            tRepository.saveAll(questions);
         else
             throw new DuplicateEntries(duplicateQuestion);
     }
 }
-
-    
 
 }
