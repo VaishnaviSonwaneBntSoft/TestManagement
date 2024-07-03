@@ -10,6 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SuccessResponse {
+    public SuccessResponse(String string, int i) {
+        //TODO Auto-generated constructor stub
+    }
     private String Message;
     private int StatusCode;
     private Object ModuleData;

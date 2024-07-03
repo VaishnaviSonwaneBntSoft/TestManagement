@@ -17,7 +17,7 @@ public class CategoryService {
 
     public Category createCategory(Category category)
     {
-        boolean result = categoryRepository.existsById(category.getCategoryId());
+        boolean result = categoryRepository.existsBycategoryName(category.getCategoryName());
         if(!result)
         {
             System.out.println(category);

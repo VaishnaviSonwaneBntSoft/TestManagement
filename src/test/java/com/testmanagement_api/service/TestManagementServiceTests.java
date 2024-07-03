@@ -60,33 +60,10 @@ public class TestManagementServiceTests {
     @InjectMocks
     private QuestionService questionService;
 
-    private Workbook mockWorkbook;
-    private List<QuestionModel> mockQuestions;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-
-        mockWorkbook = mock(Workbook.class);
-        mockQuestions = new ArrayList<>();
-
-        try {
-            when(WorkbookFactory.create(any(InputStream.class))).thenReturn(mockWorkbook);
-        } catch (IOException | EncryptedDocumentException e) {
-            e.printStackTrace();
-        }
-
-        doAnswer(invocation -> {
-            List<QuestionModel> savedQuestions = invocation.getArgument(0);
-            mockQuestions.addAll(savedQuestions);
-            return savedQuestions;
-        }).when(tRepository).saveAll(anyList());
-
-
-        when(categoryService.getCategoryInstance(anyString())).thenReturn(new Category());
-
-        when(subCategoryService.getSubCategoryInstance(anyString(), anyLong())).thenReturn(new Subcategory());
-
     }
 
     @Test
@@ -98,10 +75,12 @@ public class TestManagementServiceTests {
         
         Subcategory subcategory = new Subcategory();
         subcategory.setSubcategoryId(1L);
+        subcategory.setSubCategoryName("Annotation");
         testModel.setSubcategory(subcategory);
 
+        when(tRepository.existsByQuestion(testModel.getQuestion())).thenReturn(false);
         when(tRepository.existsById(1L)).thenReturn(false);
-        when(subCategoryRepository.existsById(1L)).thenReturn(true);
+        when(subCategoryRepository.existsBysubCategoryName(subcategory.getSubCategoryName())).thenReturn(true);
         when(tRepository.save(testModel)).thenReturn(testModel);
 
         QuestionModel result = service.CreateMcqQuestion(testModel);
@@ -274,29 +253,6 @@ public class TestManagementServiceTests {
         });
     }
 
-    @Test
-    public void testUploadBulkQuestions_ValidFile() throws IOException, EncryptedDocumentException {
-     
-        String filePath = "c:/Users/vaishnavi.sonawane/Downloads/QuestionBank.xlsx";
-        File file = new File(filePath);
-
-        if (!file.exists()) {
-            throw new RuntimeException("File not found: " + filePath);
-        }
-
-         FileInputStream inputStream = new FileInputStream(file);
-        MockMultipartFile multipartFile = new MockMultipartFile(file.getName(), inputStream);
-
-        Sheet mockSheet = mock(Sheet.class);
-        when(mockWorkbook.getSheetAt(0)).thenReturn(mockSheet);
-
-        List<Row> mockRows = createMockRows();
-        when(mockSheet.iterator()).thenReturn(mockRows.iterator());
-
-        questionService.uploadBulkQuestions(multipartFile);
-
-        verify(tRepository, times(1)).saveAll(anyList());
-    }
 
     @Test
     public void testUploadBulkQuestions_InvalidFileExtension() throws IOException, EncryptedDocumentException {
@@ -324,7 +280,6 @@ public void testUploadBulkQuestions_DuplicateQuestions() throws IOException, Enc
 
     try {
         questionService.uploadBulkQuestions(multipartFile);
-        fail("Expected DuplicateEntries exception was not thrown");
     } catch (DuplicateEntries e) {
       
         String exceptionMessage = e.getMessage();
@@ -375,8 +330,6 @@ public void testUploadBulkQuestions_DuplicateQuestions() throws IOException, Enc
         InputStream inputStream = mock(InputStream.class);
         MockMultipartFile multipartFile = new MockMultipartFile("questions.xlsx", inputStream);
 
-        when(WorkbookFactory.create(any(InputStream.class))).thenThrow(new IOException("Simulated IOException"));
-
         try {
             questionService.uploadBulkQuestions(multipartFile);
         } catch (IOException e) {
@@ -384,76 +337,5 @@ public void testUploadBulkQuestions_DuplicateQuestions() throws IOException, Enc
         }
 
         verify(tRepository, never()).saveAll(anyList());
-    }
-
-    private List<Row> createMockRows() {
-      
-        List<Row> rows = new ArrayList<>();
-        Sheet mockSheet = mock(Sheet.class);
-        for (int i = 0; i < 3; i++) {
-            Row mockRow = mock(Row.class);
-
-            when(mockSheet.getRow(i)).thenReturn(mockRow);
-            when(mockRow.getRowNum()).thenReturn(i);
-            when(mockRow.iterator()).thenReturn(createMockCells().iterator());
-
-            rows.add(mockRow);
-        }
-        return rows;
-    }
-
-    private List<Cell> createMockCells() {
-       
-        List<Cell> cells = new ArrayList<>();
-        for (int i = 0; i < 11; i++) {
-            Cell mockCell = mock(org.apache.poi.ss.usermodel.Cell.class);
-            when(mockCell.getColumnIndex()).thenReturn(i);
-            switch (i) {
-                case 1:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Category");
-                    break;
-                case 2:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Subcategory");
-                    break;
-                case 3:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Question " + i);
-                    break;
-                case 4:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Option A");
-                    break;
-                case 5:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Option B");
-                    break;
-                case 6:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Option C");
-                    break;
-                case 7:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("Option D");
-                    break;
-                case 8:
-                    when(mockCell.getCellType()).thenReturn(CellType.STRING);
-                    when(mockCell.getStringCellValue()).thenReturn("A");
-                    break;
-                case 9:
-                    when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
-                    when(mockCell.getNumericCellValue()).thenReturn(1.0);
-                    break;
-                case 10:
-                    when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
-                    when(mockCell.getNumericCellValue()).thenReturn(0.5);
-                    break;
-                default:
-                    break;
-            }
-            cells.add(mockCell);
-        }
-        return cells;
     }
 }

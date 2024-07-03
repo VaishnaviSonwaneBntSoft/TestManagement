@@ -39,7 +39,7 @@ public class CategoryController {
        }
        catch(Exception exception)
        {
-        SuccessResponse successResponse = new SuccessResponse("Duplicate Data", 400, exception);
+        SuccessResponse successResponse = new SuccessResponse("Duplicate Data", 400, null);
         return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.BAD_REQUEST);
        }
 

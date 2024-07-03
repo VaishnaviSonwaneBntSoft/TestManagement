@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+
+import com.testmanagement_api.dao.CategoryRepository;
 import com.testmanagement_api.dao.SubCategoryRepository;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.exceptionhandler.CategoryNotFoundException;
@@ -19,11 +21,14 @@ public class SubCategoryService {
     @Autowired
     SubCategoryRepository subCategoryRepository;
 
+    @Autowired
+    CategoryRepository categoryRepository;
+
     public Subcategory createSubcategory(Subcategory subcategory)
     {
-        if(!subCategoryRepository.existsById(subcategory.getSubcategoryId()))
+        if(!subCategoryRepository.existsBysubCategoryName(subcategory.getSubCategoryName()))
         {
-           if(subCategoryRepository.existsById(subcategory.getCategory().getCategoryId()))
+           if(categoryRepository.existsBycategoryName(subcategory.getCategory().getCategoryName()))
            {
                  return subCategoryRepository.save(subcategory);
            }else{
