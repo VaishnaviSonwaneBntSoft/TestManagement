@@ -60,13 +60,13 @@ To run this project locally, follow these steps:
 
 Handles CRUD operations for managing categories.
 
-- **POST
+- **POST**
   Create a new category.
-  - *url:
+  - *url:*
   ```bash
   http://localhost:8080/api/category
   ```
-  - *body
+  - *body*
   ```bash
   {
     "categoryName": "Java",
