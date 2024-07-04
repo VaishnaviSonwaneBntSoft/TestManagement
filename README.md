@@ -137,7 +137,8 @@ Manages operations related to questions.
 		"positive_mark": "3",
 		"negative_mark": "-1"
 }
-  
+```
+  ```
 - **GET**
   Retrieve all Questions.
    -*url:*
