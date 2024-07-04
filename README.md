@@ -20,7 +20,7 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 
 - Java Development Kit (JDK) - Version 21
 - Gradle Build Tool - Version 7.x
-- PostgreSQL Database
+- PostgreSQL Database - Version 8.x
 - IDE with Gradle support (Visual Studio Code)
 - Internet access to download dependencies from Maven Central
   
