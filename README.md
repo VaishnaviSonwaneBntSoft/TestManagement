@@ -29,7 +29,7 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 To run this project locally, follow these steps:
 
 1. **Clone the repository:**
-   ```markdown
+ 
    To clone the repository, open your terminal and run:
    ```bash
    git clone https://github.com/VaishnaviSonwaneBntSoft/testmanagement-api.git
