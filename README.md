@@ -20,7 +20,7 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 
 - Java Development Kit (JDK) - Version 21
 - Gradle Build Tool - Version 7.x
-- PostgreSQL Database - Version 8.x
+- PostgreSQL Database - Version 16
 - IDE with Gradle support (Visual Studio Code)
 - Internet access to download dependencies from Maven Central
   
@@ -118,25 +118,25 @@ Manages operations related to questions.
   ```
   -*body*
  ```
-
-{	"subcategory":{
-     		"subcategoryId":"5",
-        "category" : {
-        "categoryId":"",
-        "categoryName":"java",
-        "categoryDesciption":"categoryDesciption"
+{
+    "subcategory": {
+        "subcategoryId": "5",
+        "category": {
+            "categoryId": "",
+            "categoryName": "java",
+            "categoryDesciption": "categoryDesciption"
+        },
+        "subCategoryName": "Collection",
+        "subCategoryDesciption": "Collections from Java"
     },
-    "subCategoryName":"Collection",
-    "subCategoryDesciption":"Collections from Java"
-     },
-		"question": "In Spring Boot @RestController annotation is equivalent to",
-		"option_one": "@Controller and @PostMapping",
-		"option_two": "@Controller and @Component",
-		"option_three": "@Controller and @ResponseBody",
-		"option_four": "@Controller and @ResponseStatus",
-		"correct_option": "@Controller and @ResponseBody",
-		"positive_mark": "3",
-		"negative_mark": "-1"
+    "question": "In Spring Boot @RestController annotation is equivalent to",
+    "option_one": "@Controller and @PostMapping",
+    "option_two": "@Controller and @Component",
+    "option_three": "@Controller and @ResponseBody",
+    "option_four": "@Controller and @ResponseStatus",
+    "correct_option": "@Controller and @ResponseBody",
+    "positive_mark": "3",
+    "negative_mark": "-1"
 }
   ```
 - **GET**
@@ -159,28 +159,27 @@ Manages operations related to questions.
   ```
    -*body*
   ```bash
-  {
-  "question_id":"21"
-		"subcategory":{
-     "subcategoryId":"5",
-        "category" : {
-        "categoryId":"",
-        "categoryName":"java",
-        "categoryDesciption":"categoryDesciption"
+{
+    "question_id": "21"
+		"subcategory": {
+        "subcategoryId": "5",
+        "category": {
+            "categoryId": "",
+            "categoryName": "java",
+            "categoryDesciption": "categoryDesciption"
+        },
+        "subCategoryName": "Collection",
+        "subCategoryDesciption": "Collections from Java"
     },
-    "subCategoryName":"Collection",
-    "subCategoryDesciption":"Collections from Java"
-   
-     },
-		"question": "In Spring Boot @RestController annotation is equivalent to",
-		"option_one": "@Controller and @PostMapping",
-		"option_two": "@Controller and @Component",
-		"option_three": "@Controller and @ResponseBody",
-		"option_four": "@Controller and @ResponseStatus",
-		"correct_option": "@Controller and @ResponseBody",
-		"positive_mark": "3",
-		"negative_mark": "-1"
-	}
+    "question": "In Spring Boot @RestController annotation is equivalent to",
+    "option_one": "@Controller and @PostMapping",
+    "option_two": "@Controller and @Component",
+    "option_three": "@Controller and @ResponseBody",
+    "option_four": "@Controller and @ResponseStatus",
+    "correct_option": "@Controller and @ResponseBody",
+    "positive_mark": "3",
+    "negative_mark": "-1"
+}
   ```
 - **DELETE**
    Delete a Question.
@@ -207,15 +206,15 @@ Handles CRUD operations for managing subcategories.
   ```
   -*body*
   ```bash
-  {
-    "category" : {
-        "categoryId":"",
-        "categoryName":"java",
-        "categoryDesciption":"categoryDesciption"
+ {
+    "category": {
+        "categoryId": "",
+        "categoryName": "java",
+        "categoryDesciption": "categoryDesciption"
     },
-    "subCategoryName":"Collection",
-    "subCategoryDesciption":"Collections from Java"
-  }
+    "subCategoryName": "Collection",
+    "subCategoryDesciption": "Collections from Java"
+}
   ```
 - **GET**
   Retrieve all Subcategories.
@@ -238,15 +237,15 @@ Handles CRUD operations for managing subcategories.
    -*body*
   ```bash
   {
-  "subcategoryId":"5",
-    "category" : {
-        "categoryId":"",
-        "categoryName":"java",
-        "categoryDesciption":"categoryDesciption"
+    "subcategoryId": "5",
+    "category": {
+        "categoryId": "",
+        "categoryName": "java",
+        "categoryDesciption": "categoryDesciption"
     },
-    "subCategoryName":"Collection",
-    "subCategoryDesciption":"Collections from Java"
-  }
+    "subCategoryName": "Collection",
+    "subCategoryDesciption": "Collections from Java"
+}
   ```
 - **DELETE**
    Delete a subcategory.
