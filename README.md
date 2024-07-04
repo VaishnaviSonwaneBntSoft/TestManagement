@@ -62,11 +62,11 @@ Handles CRUD operations for managing categories.
 
 - **POST**
   Create a new category.
-  - *url:*
+  *url:*
   ```bash
   http://localhost:8080/api/category
   ```
-  - *body*
+  *body*
   ```bash
   {
     "categoryName": "Java",
