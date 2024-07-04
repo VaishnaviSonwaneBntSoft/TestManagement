@@ -118,8 +118,7 @@ Manages operations related to questions.
   ```
   -*body*
   ```bash
-{
-	"subcategory":{
+{	"subcategory":{
      		"subcategoryId":"5",
         "category" : {
         "categoryId":"",
@@ -128,7 +127,6 @@ Manages operations related to questions.
     },
     "subCategoryName":"Collection",
     "subCategoryDesciption":"Collections from Java"
-   
      },
 		"question": "In Spring Boot @RestController annotation is equivalent to",
 		"option_one": "@Controller and @PostMapping",
@@ -139,7 +137,7 @@ Manages operations related to questions.
 		"positive_mark": "3",
 		"negative_mark": "-1"
 }
-  ```
+  
 - **GET**
   Retrieve all Questions.
    -*url:*
