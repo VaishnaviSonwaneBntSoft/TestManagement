@@ -40,17 +40,19 @@ To run this project locally, follow these steps:
    cd TestManagement
    ```
    
-3. **Set up the database:**
-   
-   Ensure you have PostgreSQL Version 8 installed locally or configure your database settings in application.properties.
-
-4. **Build and run the application:**
+3. **Checkout master branch:**
+     ```bash
+    git checkout master
+   ```
+4. **Build application:**
     ```bash
-    gradle build
-    gradle bootRun
+   ./gradlew clean build
     ```
-
-4. **Access the API endpoints:**
+5. **Run application:**
+    ```bash
+   ./gradlew clean build
+    ```
+6. **Access the API endpoints:**
 
   Once the application is running, you can access the API using tools like Postman.
 
