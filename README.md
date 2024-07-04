@@ -119,9 +119,8 @@ Manages operations related to questions.
   -*body*
   ```bash
 {
-		"subcategory":{
-           
-     "subcategoryId":"5",
+	"subcategory":{
+     		"subcategoryId":"5",
         "category" : {
         "categoryId":"",
         "categoryName":"java",
@@ -139,7 +138,7 @@ Manages operations related to questions.
 		"correct_option": "@Controller and @ResponseBody",
 		"positive_mark": "3",
 		"negative_mark": "-1"
-	}
+}
   ```
 - **GET**
   Retrieve all Questions.
