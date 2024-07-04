@@ -62,21 +62,49 @@ Handles CRUD operations for managing categories.
 
 - **POST**
   Create a new category.
-  *url:*
+  -*url:*
   ```bash
   http://localhost:8080/api/category
   ```
-  *body*
+  -*body*
   ```bash
   {
     "categoryName": "Java",
     "categoryDesciption": "Core Java category"
   }
   ```
-- **GET /api/category/getall**: Retrieve all categories.
-- **GET /api/category/getbyid/{category_id}**: Retrieve a category by ID.
-- **PUT /api/category/update/{category_id}**: Update a category.
-- **DELETE /api/category/delete/{category_id}**: Delete a category.
+- **GET**
+  Retrieve all categories.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/category
+  ```
+- **GET**
+  Retrieve a category by ID.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/category/1
+  ```
+- **PUT**
+  Update a category.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/category/1
+  ```
+   -*body*
+  ```bash
+  {
+    "categoryId": 1,
+    "categoryName": "Java",
+    "categoryDesciption": "Core Java category"
+  }
+  ```
+- **DELETE**
+   Delete a category.
+  -*url:*
+  ```bash
+  http://localhost:8080/api/category/1
+  ```
 
 ### QuestionController
 
