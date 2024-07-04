@@ -159,7 +159,7 @@ Manages operations related to questions.
   http://localhost:8080/api/question/1
   ```
    -*body*
-  ```bash
+ ```
 {
     "question_id": "21"
 		"subcategory": {
