@@ -29,18 +29,24 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 To run this project locally, follow these steps:
 
 1. **Clone the repository:**
-
+   ```markdown
+   To clone the repository, open your terminal and run:
    ```bash
    git clone https://github.com/VaishnaviSonwaneBntSoft/testmanagement-api.git
-   cd testmanagement-api
-   
-2. **Set up the database:**
-   
-   Ensure you have PostgreSQL installed locally or configure your database settings in application.properties.
+   ```
 
-3. **Build and run the application:**
+2. **Change to project directory**
+   ```bash
+   cd testmanagement-api
+   ```
+   
+3. **Set up the database:**
+   
+   Ensure you have PostgreSQL Version 8 installed locally or configure your database settings in application.properties.
+
+4. **Build and run the application:**
     ```bash
-   ./mvnw spring-boot:run
+  gradle bootRun
 
 4. **Access the API endpoints:**
 
