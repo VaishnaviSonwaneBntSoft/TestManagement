@@ -121,10 +121,62 @@ Manages operations related to questions.
 
 Handles CRUD operations for managing subcategories.
 
-- **POST /api/subcategory/create**: Create a new subcategory.
-- **GET /api/subcategory/getall**: Retrieve all subcategories.
-- **GET /api/subcategory/getbyid/{subcat_id}**: Retrieve a subcategory by ID.
-- **PUT /api/subcategory/update/{subcat_id}**: Update a subcategory.
+- **POST**
+  Create a new Subcategory.
+  -*url:*
+  ```bash
+  http://localhost:8080/api/subcategory
+  ```
+  -*body*
+  ```bash
+  {
+    "category" : {
+        "categoryId":"",
+        "categoryName":"java",
+        "categoryDesciption":"categoryDesciption"
+    },
+    "subCategoryName":"Collection",
+    "subCategoryDesciption":"Collections from Java"
+  }
+  ```
+- **GET**
+  Retrieve all Subcategories.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/subcategory
+  ```
+- **GET**
+  Retrieve a subcategory by ID.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/subcategory/1
+  ```
+- **PUT**
+  Update a subcategory.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/subcategory/1
+  ```
+   -*body*
+  ```bash
+  {
+  "subcategoryId":"5",
+    "category" : {
+        "categoryId":"",
+        "categoryName":"java",
+        "categoryDesciption":"categoryDesciption"
+    },
+    "subCategoryName":"Collection",
+    "subCategoryDesciption":"Collections from Java"
+  }
+  ```
+- **DELETE**
+   Delete a subcategory.
+  -*url:*
+  ```bash
+  http://localhost:8080/api/subcategory/1
+  ```
+
 
 ##  Error Handling
 
