@@ -4,7 +4,7 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 
 ## Features
 
-- **CRUD operations for managing CREATE, UPDATE, DELETE, READ Operations**
+- **CRUD API's for managing CREATE, UPDATE, DELETE, READ Operations**
 - **Bulk upload of questions from an Excel file**
 - **Error handling for duplicate entries and other exceptions**
 
