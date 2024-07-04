@@ -32,12 +32,12 @@ To run this project locally, follow these steps:
  
    To clone the repository, open your terminal and run:
    ```bash
-   git clone https://github.com/VaishnaviSonwaneBntSoft/testmanagement-api.git
+   git clone https://github.com/VaishnaviSonwaneBntSoft/TestManagement.git 
    ```
 
 2. **Change to project directory**
    ```bash
-   cd testmanagement-api
+   cd TestManagement
    ```
    
 3. **Set up the database:**
