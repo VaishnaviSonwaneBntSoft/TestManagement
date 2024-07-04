@@ -117,7 +117,7 @@ Manages operations related to questions.
   http://localhost:8080/api/question
   ```
   -*body*
-  ```
+ 
   ```bash
 {	"subcategory":{
      		"subcategoryId":"5",
@@ -138,7 +138,6 @@ Manages operations related to questions.
 		"positive_mark": "3",
 		"negative_mark": "-1"
 }
-```
   ```
 - **GET**
   Retrieve all Questions.
