@@ -46,7 +46,9 @@ To run this project locally, follow these steps:
 
 4. **Build and run the application:**
     ```bash
-  gradle bootRun
+    gradle build
+    gradle bootRun
+    ```
 
 4. **Access the API endpoints:**
 
