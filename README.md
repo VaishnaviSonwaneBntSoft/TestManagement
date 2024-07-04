@@ -206,7 +206,7 @@ Handles CRUD operations for managing subcategories.
   http://localhost:8080/api/subcategory
   ```
   -*body*
-  ```bash
+```bash
  {
     "category": {
         "categoryId": "",
@@ -236,7 +236,7 @@ Handles CRUD operations for managing subcategories.
   http://localhost:8080/api/subcategory/1
   ```
    -*body*
-  ```bash
+ ```bash
   {
     "subcategoryId": "5",
     "category": {
