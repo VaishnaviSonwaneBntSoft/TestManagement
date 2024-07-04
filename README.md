@@ -16,6 +16,14 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 - Lombok
 - SLF4J (for logging)
 
+## Prerequisites
+
+- Java Development Kit (JDK) - Version 21
+- Gradle Build Tool - Version 7.x
+- PostgreSQL Database
+- IDE with Gradle support (Visual Studio Code)
+- Internet access to download dependencies from Maven Central
+  
 ## Getting Started
 
 To run this project locally, follow these steps:
