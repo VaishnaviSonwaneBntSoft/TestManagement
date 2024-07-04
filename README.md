@@ -10,7 +10,7 @@ This project implements an API for managing multiple-choice questions (MCQs) usi
 
 ## Technologies Used
 
-- Java
+- Java 21
 - Spring Boot
 - Spring Data JPA
 - Lombok
@@ -60,7 +60,19 @@ To run this project locally, follow these steps:
 
 Handles CRUD operations for managing categories.
 
-- **POST /api/category/create**: Create a new category.
+- **POST
+  Create a new category.
+  - *url:
+  ```bash
+  http://localhost:8080/api/category
+  ```
+  - *body
+  ```bash
+  {
+    "categoryName": "Java",
+    "categoryDesciption": "Core Java category"
+  }
+  ```
 - **GET /api/category/getall**: Retrieve all categories.
 - **GET /api/category/getbyid/{category_id}**: Retrieve a category by ID.
 - **PUT /api/category/update/{category_id}**: Update a category.
