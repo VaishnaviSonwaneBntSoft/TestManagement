@@ -110,13 +110,93 @@ Handles CRUD operations for managing categories.
 
 Manages operations related to questions.
 
-- **POST /api/test/create**: Create a new question.
-- **GET /api/test/getdata**: Retrieve all questions.
-- **GET /api/test/getbyId/{id}**: Retrieve a question by ID.
-- **PUT /api/test/update/{id}**: Update a question.
-- **DELETE /api/test/delete/{id}**: Delete a question.
-- **POST /api/test/upload**: Uploads bulk data.
-
+- **POST**
+  Create a new Question.
+  -*url:*
+  ```bash
+  http://localhost:8080/api/question
+  ```
+  -*body*
+  ```bash
+{
+		"subcategory":{
+           
+     "subcategoryId":"5",
+        "category" : {
+        "categoryId":"",
+        "categoryName":"java",
+        "categoryDesciption":"categoryDesciption"
+    },
+    "subCategoryName":"Collection",
+    "subCategoryDesciption":"Collections from Java"
+   
+     },
+		"question": "In Spring Boot @RestController annotation is equivalent to",
+		"option_one": "@Controller and @PostMapping",
+		"option_two": "@Controller and @Component",
+		"option_three": "@Controller and @ResponseBody",
+		"option_four": "@Controller and @ResponseStatus",
+		"correct_option": "@Controller and @ResponseBody",
+		"positive_mark": "3",
+		"negative_mark": "-1"
+	}
+  ```
+- **GET**
+  Retrieve all Questions.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/question
+  ```
+- **GET**
+  Retrieve a question by ID.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/question/1
+  ```
+- **PUT**
+  Update a Question.
+   -*url:*
+  ```bash
+  http://localhost:8080/api/question/1
+  ```
+   -*body*
+  ```bash
+  {
+  "question_id":"21"
+		"subcategory":{
+     "subcategoryId":"5",
+        "category" : {
+        "categoryId":"",
+        "categoryName":"java",
+        "categoryDesciption":"categoryDesciption"
+    },
+    "subCategoryName":"Collection",
+    "subCategoryDesciption":"Collections from Java"
+   
+     },
+		"question": "In Spring Boot @RestController annotation is equivalent to",
+		"option_one": "@Controller and @PostMapping",
+		"option_two": "@Controller and @Component",
+		"option_three": "@Controller and @ResponseBody",
+		"option_four": "@Controller and @ResponseStatus",
+		"correct_option": "@Controller and @ResponseBody",
+		"positive_mark": "3",
+		"negative_mark": "-1"
+	}
+  ```
+- **DELETE**
+   Delete a Question.
+  -*url:*
+  ```bash
+  http://localhost:8080/api/question/1
+  ```
+- **POST**
+  Post bulk data
+  -*url:*
+  ```bash
+  http://localhost:8080/api/question/uploadbulk
+  ```
+  Add excel file in form-data of body and give key name same as argument pass by api
 ### SubCategoryController
 
 Handles CRUD operations for managing subcategories.
@@ -177,6 +257,14 @@ Handles CRUD operations for managing subcategories.
   http://localhost:8080/api/subcategory/1
   ```
 
+- **POST**
+  Upload bulk data.
+  -*url:*
+  ```bash
+  http://localhost:8080/api/subcategory/uploadbulk
+  ```
+  Add file in value section of form-data present in body section of postman, give key name same as argument of api.
+  
 
 ##  Error Handling
 
