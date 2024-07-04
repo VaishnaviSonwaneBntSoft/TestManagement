@@ -118,7 +118,7 @@ Manages operations related to questions.
   ```
   -*body*
  ```
-  ```bash
+
 {	"subcategory":{
      		"subcategoryId":"5",
         "category" : {
