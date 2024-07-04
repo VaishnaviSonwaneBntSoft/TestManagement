@@ -50,7 +50,7 @@ To run this project locally, follow these steps:
     ```
 5. **Run application:**
     ```bash
-   ./gradlew clean build
+   ./gradlew bootRun
     ```
 6. **Access the API endpoints:**
 
