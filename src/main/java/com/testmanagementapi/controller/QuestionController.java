@@ -54,23 +54,23 @@ public class QuestionController {
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @PutMapping("/{Question_id}")
+  @PutMapping("/{Question-id}")
   public ResponseEntity<SuccessResponse> updateQuestionData(@Valid @RequestBody QuestionModel model,
-      @PathVariable("Question_id") long questionId) {
+      @PathVariable("Question-id") long questionId) {
     QuestionModel model2 = questionService.updateQuestionData(model, questionId);
     SuccessResponse sResponse = new SuccessResponse("Question Data Updated", 200, model2);
     return new ResponseEntity<>(sResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/{Question_id}")
-  public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("Question_id") long questionId) {
+  @GetMapping("/{Question-id}")
+  public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("Question-id") long questionId) {
     Optional<QuestionModel> model = questionService.getQuestionDataById(questionId);
     SuccessResponse successResponse = new SuccessResponse("Data Retrieved by Id", 200, model);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @DeleteMapping("/{Question_id}")
-  public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("Question_id") long questionId) {
+  @DeleteMapping("/{Question-id}")
+  public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("Question-id") long questionId) {
     questionService.deleteQuestionDataById(questionId);
     SuccessResponse successResponse = new SuccessResponse("Question Data Deleted", 204, null);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);

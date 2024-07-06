@@ -46,24 +46,24 @@ public class SubCategoryController {
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/{SubCategory_id}")
-  public ResponseEntity<SuccessResponse> getSubCategory(@PathVariable("SubCategory_id") long subCategoryId) {
+  @GetMapping("/{SubCategory-id}")
+  public ResponseEntity<SuccessResponse> getSubCategory(@PathVariable("SubCategory-id") long subCategoryId) {
     Optional<Subcategory> optionalSubcategory = subCategoryService.getSubCategory(subCategoryId);
     SuccessResponse successResponse = new SuccessResponse("Subcategory Data Retrieved", 200, optionalSubcategory);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @PutMapping("/{SubCategory_id}")
+  @PutMapping("/{SubCategory-id}")
   public ResponseEntity<SuccessResponse> updateSubCategory(@Valid @RequestBody Subcategory subcategory,
-      @PathVariable("SubCategory_id") long subCategoryId) {
+      @PathVariable("SubCategory-id") long subCategoryId) {
 
     Subcategory updatesSubcategory = subCategoryService.updateSubcategory(subcategory, subCategoryId);
     SuccessResponse successResponse = new SuccessResponse("Subcategory Data Updated", 200, updatesSubcategory);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @DeleteMapping("/{SubCategory_id}")
-  public ResponseEntity<SuccessResponse> deleteSubCategory(@PathVariable("SubCategory_id") long subCategoryId) {
+  @DeleteMapping("/{SubCategory-id}")
+  public ResponseEntity<SuccessResponse> deleteSubCategory(@PathVariable("SubCategory-id") long subCategoryId) {
     subCategoryService.deleteSubcategory(subCategoryId);
     SuccessResponse successResponse = new SuccessResponse("Subcategory Data deleted", 200, null);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);

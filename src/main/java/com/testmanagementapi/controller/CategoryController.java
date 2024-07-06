@@ -47,8 +47,8 @@ public class CategoryController {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{Category_id}")
-    public ResponseEntity<SuccessResponse> getCategory(@PathVariable("Category_id") long categoryId) {
+    @GetMapping("/{Category-id}")
+    public ResponseEntity<SuccessResponse> getCategory(@PathVariable("Category-id") long categoryId) {
 
         Optional<Category> optionalCategory = categoryService.getCategory(categoryId);
         SuccessResponse successResponse = new SuccessResponse("Category Retrieved By Specified Id", 200,
@@ -56,8 +56,8 @@ public class CategoryController {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{Category_id}")
-    public ResponseEntity<SuccessResponse> putCategory(@PathVariable("Category_id") long categoryId,
+    @PutMapping("/{Category-id}")
+    public ResponseEntity<SuccessResponse> putCategory(@PathVariable("Category-id") long categoryId,
            @Valid @RequestBody Category category) {
 
         Category updatedCategory = categoryService.updateCategory(category, categoryId);
@@ -65,8 +65,8 @@ public class CategoryController {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{Category_id}")
-    public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable("Category_id") long categoryId) {
+    @DeleteMapping("/{Category-id}")
+    public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable("Category-id") long categoryId) {
         categoryService.deleteCategory(categoryId);
         SuccessResponse successResponse = new SuccessResponse("Category Deleted By Specified Id", 200, null);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
