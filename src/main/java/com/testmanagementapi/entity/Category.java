@@ -7,8 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,15 +21,19 @@ import lombok.NoArgsConstructor;
 @Component
 @Table(name = "category")
 public class Category {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
-    @SequenceGenerator(name = "category_seq", sequenceName = "category_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private long categoryId;
 
+    @NotBlank(message = "Category name cannot be blank")
+    @Size(max = 100, message = "Category name must be less than or equal to 100 characters")
     @Column(name = "category_name")
     private String categoryName;
-    
+
+    @Size(max = 255, message = "Category description must be less than or equal to 255 characters")
     @Column(name = "category_description")
     private String categoryDescription;
+
 }

@@ -2,11 +2,9 @@ package com.testmanagementapi.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,16 +12,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import com.testmanagementapi.controller.SubCategoryController;
 import com.testmanagementapi.entity.Subcategory;
 import com.testmanagementapi.response.SuccessResponse;
-import com.testmanagementapi.service.SubCategoryService;
+import com.testmanagementapi.service.impl.SubCategoryServiceImpl;
 
 class SubCategoryControllerTests {
 
     @Mock
-    private SubCategoryService subCategoryService;
+    private SubCategoryServiceImpl subCategoryService;
 
     @InjectMocks
     private SubCategoryController subCategoryController;

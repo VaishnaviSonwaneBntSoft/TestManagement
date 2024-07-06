@@ -19,7 +19,7 @@ import com.testmanagementapi.exception.DataNotFoundException;
 import com.testmanagementapi.exception.DuplicateSubCategoryEntry;
 import com.testmanagementapi.repository.CategoryRepository;
 import com.testmanagementapi.repository.SubCategoryRepository;
-import com.testmanagementapi.service.SubCategoryService;
+import com.testmanagementapi.service.impl.SubCategoryServiceImpl;
 
 class SubCategoryServiceTests {
 
@@ -27,7 +27,7 @@ class SubCategoryServiceTests {
     private SubCategoryRepository subCategoryRepository;
 
     @InjectMocks
-    private SubCategoryService subCategoryService;
+    private SubCategoryServiceImpl subCategoryService;
 
     @Mock
     private CategoryRepository categoryRepository;

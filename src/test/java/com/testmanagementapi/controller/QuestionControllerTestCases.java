@@ -24,13 +24,13 @@ import com.testmanagementapi.controller.QuestionController;
 import com.testmanagementapi.entity.QuestionModel;
 import com.testmanagementapi.exception.DuplicateEntries;
 import com.testmanagementapi.response.SuccessResponse;
-import com.testmanagementapi.service.QuestionService;
+import com.testmanagementapi.service.impl.QuestionServiceImpl;
 
 @SpringBootTest
 class QuestionControllerTestCase {
 
     @Mock
-    private QuestionService tService;
+    private QuestionServiceImpl tService;
 
     @InjectMocks
     private QuestionController controller;

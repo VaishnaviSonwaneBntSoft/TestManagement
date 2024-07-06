@@ -28,9 +28,9 @@ import com.testmanagementapi.exception.DuplicatedDataException;
 import com.testmanagementapi.exception.SubcategoryNotFoundException;
 import com.testmanagementapi.repository.QuestionRepository;
 import com.testmanagementapi.repository.SubCategoryRepository;
-import com.testmanagementapi.service.CategoryService;
-import com.testmanagementapi.service.QuestionService;
-import com.testmanagementapi.service.SubCategoryService;
+import com.testmanagementapi.service.impl.CategoryServiceImpl;
+import com.testmanagementapi.service.impl.QuestionServiceImpl;
+import com.testmanagementapi.service.impl.SubCategoryServiceImpl;
 
 class QuestionServiceTestCase{
 
@@ -41,13 +41,13 @@ class QuestionServiceTestCase{
     private SubCategoryRepository subCategoryRepository;
 
     @Mock
-    private SubCategoryService subCategoryService;
+    private SubCategoryServiceImpl subCategoryService;
 
     @Mock
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @InjectMocks
-    private QuestionService service;
+    private QuestionServiceImpl service;
 
 
     @BeforeEach

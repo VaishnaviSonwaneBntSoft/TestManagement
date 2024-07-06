@@ -17,7 +17,7 @@ import com.testmanagementapi.entity.Category;
 import com.testmanagementapi.exception.DataNotFoundException;
 import com.testmanagementapi.exception.DuplicateCategoryEntry;
 import com.testmanagementapi.repository.CategoryRepository;
-import com.testmanagementapi.service.CategoryService;
+import com.testmanagementapi.service.impl.CategoryServiceImpl;
 
 class CategoryServiceTests {
 
@@ -25,7 +25,7 @@ class CategoryServiceTests {
     private CategoryRepository categoryRepository;
 
     @InjectMocks
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @BeforeEach
     public void setUp() {

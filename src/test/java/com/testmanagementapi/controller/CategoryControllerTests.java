@@ -18,12 +18,12 @@ import org.springframework.http.ResponseEntity;
 import com.testmanagementapi.controller.CategoryController;
 import com.testmanagementapi.entity.Category;
 import com.testmanagementapi.response.SuccessResponse;
-import com.testmanagementapi.service.CategoryService;
+import com.testmanagementapi.service.impl.CategoryServiceImpl;
 
 class CategoryControllerTests {
 
     @Mock
-    private CategoryService categoryService;
+    private CategoryServiceImpl categoryService;
 
     @InjectMocks
     private CategoryController categoryController;
