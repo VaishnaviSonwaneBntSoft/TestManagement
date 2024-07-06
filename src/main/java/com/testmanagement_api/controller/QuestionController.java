@@ -1,7 +1,6 @@
 package com.testmanagement_api.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,89 +28,93 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/test")
 public class QuestionController {
 
-    @Autowired
-    QuestionService tService;
+    private QuestionService questionService; 
 
-    @PostMapping("/create")
-    public ResponseEntity<SuccessResponse> CreateMcqQuestion(@RequestBody QuestionModel model)
+    public QuestionController(QuestionService questionService)
+    {
+        this.questionService=questionService;
+    }
+
+    @PostMapping
+    public ResponseEntity<SuccessResponse> createMcqQuestion(@RequestBody QuestionModel model)
     {
         log.info("Received request to create a new MCQ question: {}", model);
           try{
-            tService.CreateMcqQuestion(model);
+            questionService.createMcqQuestion(model);
             SuccessResponse successResponse = new SuccessResponse("New Question Saved" , 201 , model);
             log.info("Successfully created new MCQ question: {}", model);
-            return new ResponseEntity<SuccessResponse>(successResponse , HttpStatus.CREATED);
+            return new ResponseEntity<>(successResponse , HttpStatus.CREATED);
           }
           catch(Exception exception)
           {
             log.error( exception.getMessage(), exception);
-            SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,exception);
-            return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+            SuccessResponse successResponse = new SuccessResponse(exception.getMessage(), 400,exception);
+            return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
           }
        
     }
 
-    @GetMapping("/getdata")
-    public ResponseEntity<SuccessResponse> GetAllQuestionsData()
+    @GetMapping
+    public ResponseEntity<SuccessResponse> getAllQuestionsData()
     {
         try{
-          List<QuestionModel> DataList = tService.GetAllQuestionsData();
-          SuccessResponse successResponse = new SuccessResponse("All Data Retrived" , 200 , DataList);
-          return new ResponseEntity<SuccessResponse>(successResponse , HttpStatus.OK);
+          List<QuestionModel> dataList = questionService.getAllQuestionsData();
+          SuccessResponse successResponse = new SuccessResponse("All Data Retrieved" , 200 , dataList);
+          return new ResponseEntity<>(successResponse , HttpStatus.OK);
         }
         catch(Exception exception)
         {
           log.error(exception.getMessage(), exception);
-         SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,null);
-         return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+         SuccessResponse successResponse = new SuccessResponse(exception.getMessage(), 400,null);
+         return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<SuccessResponse> updateQuestionData(@RequestBody QuestionModel model , @PathVariable("id") long Question_id)
+    @PutMapping("/{id}")
+    public ResponseEntity<SuccessResponse> updateQuestionData(@RequestBody QuestionModel model , @PathVariable("id") long questionId)
     { 
         try{
-          QuestionModel model2 = tService.updateQuestionData(model, Question_id);
-           SuccessResponse sResponse = new SuccessResponse("Question Data Updated", 200, model2);
-            return new ResponseEntity<SuccessResponse>(sResponse, HttpStatus.OK);
+          QuestionModel model2 = questionService.updateQuestionData(model, questionId);
+          SuccessResponse sResponse = new SuccessResponse("Question Data Updated", 200, model2);
+          return new ResponseEntity<>(sResponse, HttpStatus.OK);
         }
         catch(Exception exception)
        {
         log.error(exception.getMessage(), exception);
-        SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,null);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+        SuccessResponse successResponse = new SuccessResponse(exception.getMessage(), 400,null);
+        return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
        }
     }
 
-    @GetMapping("/getbyId/{id}")
-    public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("id") long Question_id)
+    @GetMapping("/{id}")
+    public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("id") long questionId)
     {
         try{
-          Optional<QuestionModel> model = tService.getQuestionDataById(Question_id);
-          SuccessResponse succsesResponse = new SuccessResponse("Data Retrived by Id",200,model);
-          return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.OK);
+          Optional<QuestionModel> model = questionService.getQuestionDataById(questionId);
+          SuccessResponse successResponse = new SuccessResponse("Data Retrieved by Id",200,model);
+          return new ResponseEntity<>(successResponse, HttpStatus.OK);
         }
         catch(Exception exception)
        {
         log.error(exception.getMessage(), exception);
-        SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,null);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+        SuccessResponse successResponse = new SuccessResponse(exception.getMessage(), 400,null);
+        return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
        }
       
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("id") long Question_id)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("id") long questionId)
     {   
        try{
-        tService.deleteQuestionDataById(Question_id);
-        SuccessResponse succsesResponse = new SuccessResponse("Question Data Deleted", 204,null);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.OK);
+        questionService.deleteQuestionDataById(questionId);
+        SuccessResponse successResponse = new SuccessResponse("Question Data Deleted", 204,null);
+        return new ResponseEntity<>(successResponse, HttpStatus.OK);
        }catch(Exception exception)
        {
         log.error(exception.getMessage(), exception);
-        SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,null);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+        SuccessResponse successResponse = new SuccessResponse(exception.getMessage(), 400,null);
+        return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
        }
     }
 
@@ -119,21 +122,21 @@ public class QuestionController {
    public ResponseEntity<SuccessResponse> uploadBulkQuestions(@RequestParam("file") MultipartFile file)
    {
       try{
-        tService.uploadBulkQuestions(file);
-        SuccessResponse succsesResponse = new SuccessResponse("Question Data Uploaded", 200,null);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.OK);
+        questionService.uploadBulkQuestions(file);
+        SuccessResponse successResponse = new SuccessResponse("Question Data Uploaded", 200,null);
+        return new ResponseEntity<>(successResponse, HttpStatus.OK);
       }
       catch(DuplicateEntries exception)
       {
         log.error(exception.getMessage(), exception);
-        SuccessResponse succsesResponse = new SuccessResponse("Duplicate Questions Found In Excel Sheet", 400,exception.queList);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+        SuccessResponse successResponse = new SuccessResponse("Duplicate Questions Found In Excel Sheet", 400,exception.queList);
+        return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
       }
       catch(Exception exception)
       {
         log.error(exception.getMessage(), exception);
-        SuccessResponse succsesResponse = new SuccessResponse(exception.getMessage(), 400,null);
-        return new ResponseEntity<SuccessResponse>(succsesResponse, HttpStatus.BAD_REQUEST);
+        SuccessResponse successResponse = new SuccessResponse(exception.getMessage(), 400,null);
+        return new ResponseEntity<>(successResponse, HttpStatus.BAD_REQUEST);
       }
    }
     

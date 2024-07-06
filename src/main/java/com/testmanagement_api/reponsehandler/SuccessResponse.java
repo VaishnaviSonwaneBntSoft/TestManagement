@@ -10,10 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SuccessResponse {
-    public SuccessResponse(String string, int i) {
-        //TODO Auto-generated constructor stub
+    public SuccessResponse(String messages, int statusCode) {
+        this.Message = messages;
+        this.statusCode = statusCode;
     }
     private String Message;
-    private int StatusCode;
+    private int statusCode;
     private Object ModuleData;
 }

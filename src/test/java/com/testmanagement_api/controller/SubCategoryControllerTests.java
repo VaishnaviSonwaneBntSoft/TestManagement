@@ -19,7 +19,7 @@ import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.SubCategoryService;
 
-public class SubCategoryControllerTests {
+class SubCategoryControllerTests {
 
     @Mock
     private SubCategoryService subCategoryService;
@@ -33,7 +33,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testCreateSubCategory_Success() {
+    void testCreateSubCategory_Success() {
        
         Subcategory subcategory = new Subcategory();
         subcategory.setSubcategoryId(1L);
@@ -49,7 +49,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testCreateSubCategory_DuplicateData() {
+    void testCreateSubCategory_DuplicateData() {
     
         Subcategory subcategory = new Subcategory();
         subcategory.setSubcategoryId(1L);
@@ -65,7 +65,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testGetAllSubCategory() {
+    void testGetAllSubCategory() {
     
         List<Subcategory> subcategoryList = new ArrayList<>();
         Subcategory subcategory1 = new Subcategory();
@@ -84,12 +84,12 @@ public class SubCategoryControllerTests {
         ResponseEntity<SuccessResponse> responseEntity = subCategoryController.getAllSubCategory();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("All Subcategory Data Retrived", responseEntity.getBody().getMessage());
+        assertEquals("All Subcategory Data Retrieved", responseEntity.getBody().getMessage());
         assertEquals(subcategoryList, responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testGetSubCategory_Success() {
+    void testGetSubCategory_Success() {
      
         long subcategoryId = 1L;
         Subcategory subcategory = new Subcategory();
@@ -101,12 +101,12 @@ public class SubCategoryControllerTests {
         ResponseEntity<SuccessResponse> responseEntity = subCategoryController.getSubCategory(subcategoryId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Subcategory Data Retrived", responseEntity.getBody().getMessage());
+        assertEquals("Subcategory Data Retrieved", responseEntity.getBody().getMessage());
         assertEquals(subcategory, responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testGetSubCategory_IdNotFound() {
+    void testGetSubCategory_IdNotFound() {
        
         long subcategoryId = 1L;
 
@@ -120,7 +120,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testUpdateSubCategory_Success() {
+    void testUpdateSubCategory_Success() {
        
         long subcategoryId = 1L;
         Subcategory subcategory = new Subcategory();
@@ -137,7 +137,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testUpdateSubCategory_IdNotFound() {
+    void testUpdateSubCategory_IdNotFound() {
        
         long subcategoryId = 1L;
         Subcategory subcategory = new Subcategory();
@@ -153,7 +153,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testDeleteSubCategory_Success() {
+    void testDeleteSubCategory_Success() {
      
         long subcategoryId = 1L;
 
@@ -165,7 +165,7 @@ public class SubCategoryControllerTests {
     }
 
     @Test
-    public void testDeleteSubCategory_IdNotFound() {
+    void testDeleteSubCategory_IdNotFound() {
  
         long subcategoryId = 1L;
 

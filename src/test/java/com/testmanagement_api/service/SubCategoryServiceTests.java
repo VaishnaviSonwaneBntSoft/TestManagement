@@ -13,13 +13,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.testmanagement_api.dao.SubCategoryRepository;
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicateSubCategoryEntry;
+import com.testmanagement_api.repository.CategoryRepository;
+import com.testmanagement_api.repository.SubCategoryRepository;
 
-public class SubCategoryServiceTests {
+class SubCategoryServiceTests {
 
     @Mock
     private SubCategoryRepository subCategoryRepository;
@@ -27,13 +28,16 @@ public class SubCategoryServiceTests {
     @InjectMocks
     private SubCategoryService subCategoryService;
 
+    @Mock
+    private CategoryRepository categoryRepository;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void testCreateSubcategory_Success() {
+    void testCreateSubcategory_Success() {
    
         Category category = new Category();
         category.setCategoryId(1L);
@@ -45,8 +49,8 @@ public class SubCategoryServiceTests {
         subcategory.setSubCategoryName("Test Subcategory");
         subcategory.setCategory(category);
 
-        when(subCategoryRepository.existsById(11L)).thenReturn(false);
-        when(subCategoryRepository.existsById(1L)).thenReturn(true);
+        when(subCategoryRepository.existsBySubCategoryName(subcategory.getSubCategoryName())).thenReturn(false);
+        when(categoryRepository.existsByCategoryName(category.getCategoryName())).thenReturn(true);
         when(subCategoryRepository.save(subcategory)).thenReturn(subcategory);
 
         Subcategory result = subCategoryService.createSubcategory(subcategory);
@@ -57,7 +61,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testCreateSubcategory_DuplicateSubcategory() {
+    void testCreateSubcategory_DuplicateSubcategory() {
       
         Category category = new Category();
         category.setCategoryId(1L);
@@ -68,7 +72,7 @@ public class SubCategoryServiceTests {
         subcategory.setSubCategoryName("Test Subcategory");
         subcategory.setCategory(category);
 
-        when(subCategoryRepository.existsById(1L)).thenReturn(true);
+        when(subCategoryRepository.existsBySubCategoryName(subcategory.getSubCategoryName())).thenReturn(true);
 
         assertThrows(DuplicateSubCategoryEntry.class, () -> {
             subCategoryService.createSubcategory(subcategory);
@@ -76,7 +80,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testGetAllSubCategory() {
+    void testGetAllSubCategory() {
     
         List<Subcategory> subcategoryList = new ArrayList<>();
         Category category = new Category();
@@ -105,7 +109,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testGetSubCategory_Success() {
+    void testGetSubCategory_Success() {
      
         Category category = new Category();
         category.setCategoryId(1L);
@@ -127,7 +131,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testGetSubCategory_SubcategoryNotFound() {
+    void testGetSubCategory_SubcategoryNotFound() {
   
         when(subCategoryRepository.existsById(1L)).thenReturn(false);
 
@@ -137,7 +141,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testUpdateSubcategory_Success() {
+    void testUpdateSubcategory_Success() {
     
         Category category = new Category();
         category.setCategoryId(1L);
@@ -160,7 +164,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testUpdateSubcategory_SubcategoryNotFound() {
+    void testUpdateSubcategory_SubcategoryNotFound() {
     
         Category category = new Category();
         category.setCategoryId(1L);
@@ -179,7 +183,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testDeleteSubcategory_Success() {
+    void testDeleteSubcategory_Success() {
        
         when(subCategoryRepository.existsById(1L)).thenReturn(true);
 
@@ -189,7 +193,7 @@ public class SubCategoryServiceTests {
     }
 
     @Test
-    public void testDeleteSubcategory_SubcategoryNotFound() {
+    void testDeleteSubcategory_SubcategoryNotFound() {
     
         when(subCategoryRepository.existsById(1L)).thenReturn(false);
 

@@ -1,16 +1,15 @@
 package com.testmanagement_api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import com.testmanagement_api.dao.CategoryRepository;
-import com.testmanagement_api.dao.SubCategoryRepository;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.exceptionhandler.CategoryNotFoundException;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicateSubCategoryEntry;
+import com.testmanagement_api.repository.CategoryRepository;
+import com.testmanagement_api.repository.SubCategoryRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,83 +17,76 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SubCategoryService {
 
-    @Autowired
-    SubCategoryRepository subCategoryRepository;
+    private SubCategoryRepository subCategoryRepository;
+    private CategoryRepository categoryRepository;
 
-    @Autowired
-    CategoryRepository categoryRepository;
+    public SubCategoryService(SubCategoryRepository subCategoryRepository, CategoryRepository categoryRepository) {
+        this.subCategoryRepository = subCategoryRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     public Subcategory createSubcategory(Subcategory subcategory)
     {
-        if(!subCategoryRepository.existsBysubCategoryName(subcategory.getSubCategoryName()))
+        if(!subCategoryRepository.existsBySubCategoryName(subcategory.getSubCategoryName()))
         {
-           if(categoryRepository.existsBycategoryName(subcategory.getCategory().getCategoryName()))
-           {
-                 return subCategoryRepository.save(subcategory);
-           }else{
-                CategoryNotFoundException exception = new CategoryNotFoundException("Category Not Found Which Foregin In Use");
-                throw exception;
+           if(categoryRepository.existsByCategoryName(subcategory.getCategory().getCategoryName()))
+           {    
+                return subCategoryRepository.save(subcategory);
            }
-          
-        }else{
-            DuplicateSubCategoryEntry duplicateSubCategoryEntry = new DuplicateSubCategoryEntry("Duplicate SubCategory");
-            throw duplicateSubCategoryEntry;
+                throw new CategoryNotFoundException("Category Not Found Which Foreign In Use");
         }
+        throw new DuplicateSubCategoryEntry("Duplicate SubCategory");
     }
 
     public List<Subcategory> getAllSubCategory()
     {
-        return subCategoryRepository.findAll();
+        List<Subcategory> subcategories = subCategoryRepository.findAll();
+        if(subcategories!=null)
+            return subcategories;
+       
+        throw new DataNotFoundException("No Data Present In DataBase");
     }
 
-    public Optional<Subcategory> getSubCategory(long subcategory_id)
+    public Optional<Subcategory> getSubCategory(long subCategoryId)
     {
-        if(subCategoryRepository.existsById(subcategory_id))
-        {
-            return subCategoryRepository.findById(subcategory_id);
-        }else{
-            DataNotFoundException exception = new DataNotFoundException("Id Not Found");
-            throw exception;
-        }
+        if(subCategoryRepository.existsById(subCategoryId))
+            return subCategoryRepository.findById(subCategoryId);
+       
+        throw new DataNotFoundException("Id Not Found");
     }
 
-    public Subcategory updateSubcategory(Subcategory subcategory,long subcategory_id)
+    public Subcategory updateSubcategory(Subcategory subcategory,long subCategoryId)
     {
-        if(subCategoryRepository.existsById(subcategory_id))
+        if(subCategoryRepository.existsById(subCategoryId))
         {
             if(subCategoryRepository.existsById(subcategory.getCategory().getCategoryId()))
-            {
-                  return subCategoryRepository.save(subcategory);
-            }else{
-                 CategoryNotFoundException exception = new CategoryNotFoundException("Category Not Found Which Foregin In Use");
-                 throw exception;
-            }
-        }else{
-            DataNotFoundException exception = new DataNotFoundException("Id Not Found");
-            throw exception;
+                return subCategoryRepository.save(subcategory);
+           
+            throw new CategoryNotFoundException("Category Not Found Which Foreign In Use");
         }
+        throw new DataNotFoundException("Id Not Found");
     }
 
-    public void deleteSubcategory(long subcategory_id)
+    public void deleteSubcategory(long subCategoryId)
     {
-        if(subCategoryRepository.existsById(subcategory_id))
-        {
-            subCategoryRepository.deleteById(subcategory_id);;
+        if(subCategoryRepository.existsById(subCategoryId))
+        {    subCategoryRepository.deleteById(subCategoryId);
         }else{
-            DataNotFoundException exception = new DataNotFoundException("Id Not Found");
-            throw exception;
+
+            throw new DataNotFoundException("Id Not Found");
         }
+        
     }
 
-    public Subcategory getSubCategoryInstance(String subCatgeoryName , long category_id)
-    {   log.info("Id From returned instance of subcategory is {}",category_id);//0
+    public Subcategory getSubCategoryInstance(String subCategoryName , long categoryId)
+    {   log.info("Id From returned instance of subcategory is {}",categoryId);
    
-        Subcategory resultSubcategory = subCategoryRepository.getOneBysubCategoryName(subCatgeoryName);
+        Subcategory resultSubcategory = subCategoryRepository.getOneBySubCategoryName(subCategoryName);
         log.info("Id from which is present in subcategory {}", resultSubcategory.getCategory().getCategoryId());
        
-        if(resultSubcategory.getCategory().getCategoryId()==category_id)
+        if(resultSubcategory.getCategory().getCategoryId()==categoryId)
             return resultSubcategory;
-        else
+
         return null;
     }
 

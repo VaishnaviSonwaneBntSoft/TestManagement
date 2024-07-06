@@ -7,7 +7,6 @@ import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.CategoryService;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,75 +25,81 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/category")
 public class CategoryController {
 
-    @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
+    
+    public CategoryController(CategoryService categoryService)
+    {
+        this.categoryService=categoryService;
+    }
 
-    @PostMapping("/create")
+  
+
+    @PostMapping
     public ResponseEntity<SuccessResponse> createCategory(@RequestBody Category category)
     {   
        try{
-        Category returnedcategroy = categoryService.createCategory(category);
-        SuccessResponse successResponse = new SuccessResponse("New Category Is Created", 200, returnedcategroy);
-        return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.OK);
+        Category returnedCategory = categoryService.createCategory(category);
+        SuccessResponse successResponse = new SuccessResponse("New Category Is Created", 200, returnedCategory);
+        return new ResponseEntity<>(successResponse,HttpStatus.OK);
        }
        catch(Exception exception)
        {
         SuccessResponse successResponse = new SuccessResponse("Duplicate Data", 400, null);
-        return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(successResponse,HttpStatus.BAD_REQUEST);
        }
 
     }
 
-    @GetMapping("/getall")
+    @GetMapping
     public ResponseEntity<SuccessResponse> getAllCategory() {
         
-        List<Category> catgoryList = categoryService.getAllCategory();
-        SuccessResponse successResponse = new SuccessResponse("All Categories Retrives",200,catgoryList);
-        return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.OK);
+        List<Category> categoryList = categoryService.getAllCategory();
+        SuccessResponse successResponse = new SuccessResponse("All Categories Retrieved",200,categoryList);
+        return new ResponseEntity<>(successResponse,HttpStatus.OK);
     }
 
-    @GetMapping("/getbyid/{category_id}")
-    public ResponseEntity<SuccessResponse> getCategory(@PathVariable("category_id") long category_id) {
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<SuccessResponse> getCategory(@PathVariable("categoryId") long categoryId) {
         
        try{
-        Optional<Category> optionalCategory = categoryService.getCategory(category_id);
-        SuccessResponse successResponse = new SuccessResponse("Category Retrived By Specified Id",200,optionalCategory);
-        return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.OK);
+        Optional<Category> optionalCategory = categoryService.getCategory(categoryId);
+        SuccessResponse successResponse = new SuccessResponse("Category Retrieved By Specified Id",200,optionalCategory);
+        return new ResponseEntity<>(successResponse,HttpStatus.OK);
        }
        catch(Exception exception)
        {
         SuccessResponse successResponse = new SuccessResponse("Id Not Found", 400, exception);
-        return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(successResponse,HttpStatus.BAD_REQUEST);
        }
     }
     
-    @PutMapping("/update/{category_id}")
-    public ResponseEntity<SuccessResponse> putCategory(@PathVariable("category_id") long category_id, @RequestBody Category category) {
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<SuccessResponse> putCategory(@PathVariable("categoryId") long categoryId, @RequestBody Category category) {
         
         try{
-            Category updatedCategory = categoryService.updateCategory(category, category_id);
+            Category updatedCategory = categoryService.updateCategory(category, categoryId);
             SuccessResponse successResponse = new SuccessResponse("Category Updated",200,updatedCategory);
-            return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.OK);
+            return new ResponseEntity<>(successResponse,HttpStatus.OK);
         }
         catch(Exception exception)
         {
          SuccessResponse successResponse = new SuccessResponse("Id Not Found", 400, exception);
-         return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.BAD_REQUEST);
+         return new ResponseEntity<>(successResponse,HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("/delete/{category_id}")
-    public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable("category_id") long category_id)
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable("categoryId") long categoryId)
     {
        try{
-        categoryService.deleteCategory(category_id);
+        categoryService.deleteCategory(categoryId);
         SuccessResponse successResponse = new SuccessResponse("Category Deleted By Specified Id",200,null);
-        return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.OK);
+        return new ResponseEntity<>(successResponse,HttpStatus.OK);
        }
        catch(Exception exception)
         {
          SuccessResponse successResponse = new SuccessResponse("Id Not Found", 400, exception);
-         return new ResponseEntity<SuccessResponse>(successResponse,HttpStatus.BAD_REQUEST);
+         return new ResponseEntity<>(successResponse,HttpStatus.BAD_REQUEST);
         }
     }
 }

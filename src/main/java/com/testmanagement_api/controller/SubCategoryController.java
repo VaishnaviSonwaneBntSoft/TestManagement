@@ -5,11 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.SubCategoryService;
-
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +24,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/subcategory")
 public class SubCategoryController {
 
-    @Autowired
-    SubCategoryService subCategoryService;
+    private SubCategoryService subCategoryService;
+    
+    public SubCategoryController(SubCategoryService subCategoryService)
+    {
+        this.subCategoryService=subCategoryService;
+    }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<SuccessResponse> createSubCategory(@RequestBody Subcategory subcategory) {
        try{
         Subcategory returnedSubcategory = subCategoryService.createSubcategory(subcategory);
@@ -44,20 +45,20 @@ public class SubCategoryController {
        }
     }
 
-    @GetMapping("/getall")
+    @GetMapping
     public ResponseEntity<SuccessResponse> getAllSubCategory()
     {
             List<Subcategory> subcategoryList = subCategoryService.getAllSubCategory();
-            SuccessResponse successResponse = new SuccessResponse("All Subcategory Data Retrived", 200, subcategoryList);
+            SuccessResponse successResponse = new SuccessResponse("All Subcategory Data Retrieved", 200, subcategoryList);
             return new ResponseEntity<>(successResponse,HttpStatus.OK);
     }
 
-    @GetMapping("/getbyid/{subcat_id}")
-    public ResponseEntity<SuccessResponse> getSubCategory(@PathVariable("subcat_id") long subcategory_id)
+    @GetMapping("/{subCategoryId}")
+    public ResponseEntity<SuccessResponse> getSubCategory(@PathVariable("subCategoryId") long subCategoryId)
     {
       try{
-        Optional<Subcategory> optionalSubcategory = subCategoryService.getSubCategory(subcategory_id);
-        SuccessResponse successResponse = new SuccessResponse("Subcategory Data Retrived", 200, optionalSubcategory);
+        Optional<Subcategory> optionalSubcategory = subCategoryService.getSubCategory(subCategoryId);
+        SuccessResponse successResponse = new SuccessResponse("Subcategory Data Retrieved", 200, optionalSubcategory);
         return new ResponseEntity<>(successResponse,HttpStatus.OK);
       }
       catch(Exception ex)
@@ -67,11 +68,10 @@ public class SubCategoryController {
        }
     }
 
-    @PutMapping("/update/{subcat_id}")
-    public ResponseEntity<SuccessResponse> updateSubCategory(@RequestBody Subcategory subcategory , @PathVariable("subcat_id") long subcategory_id)
-    {
+    @PutMapping("/{subCategoryId}")
+    public ResponseEntity<SuccessResponse> updateSubCategory(@RequestBody Subcategory subcategory , @PathVariable("subCategoryId") long subCategoryId){
         try{
-        Subcategory updatesSubcategory = subCategoryService.updateSubcategory(subcategory, subcategory_id);
+        Subcategory updatesSubcategory = subCategoryService.updateSubcategory(subcategory, subCategoryId);
         SuccessResponse successResponse = new SuccessResponse("Subcategory Data Updated", 200, updatesSubcategory);
         return new ResponseEntity<>(successResponse,HttpStatus.OK);
       }
@@ -82,11 +82,11 @@ public class SubCategoryController {
        }
     }
 
-    @DeleteMapping("/delete/{subcat_id}")
-    public ResponseEntity<SuccessResponse> deleteSubCategory(@PathVariable("subcat_id") long subcategory_id)
+    @DeleteMapping("/{subCategoryId}")
+    public ResponseEntity<SuccessResponse> deleteSubCategory(@PathVariable("subCategoryId") long subCategoryId)
     {
         try{
-            subCategoryService.deleteSubcategory(subcategory_id);
+            subCategoryService.deleteSubcategory(subCategoryId);
             SuccessResponse successResponse = new SuccessResponse("Subcategory Data deleted", 200, null);
             return new ResponseEntity<>(successResponse,HttpStatus.OK);
           }

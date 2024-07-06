@@ -13,12 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.testmanagement_api.dao.CategoryRepository;
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicateCategoryEntry;
+import com.testmanagement_api.repository.CategoryRepository;
 
-public class CategoryServiceTests {
+class CategoryServiceTests {
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -32,7 +32,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testCreateCategory_Success() {
+    void testCreateCategory_Success() {
 
         Category category = new Category();
         category.setCategoryId(1L);
@@ -49,13 +49,13 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testCreateCategory_DuplicateCategory() {
+    void testCreateCategory_DuplicateCategory() {
         
         Category category = new Category();
         category.setCategoryId(1L);
         category.setCategoryName("Test Category");
 
-        when(categoryRepository.existsById(1L)).thenReturn(true);
+        when(categoryRepository.existsByCategoryName(category.getCategoryName())).thenReturn(true);
 
         assertThrows(DuplicateCategoryEntry.class, () -> {
             categoryService.createCategory(category);
@@ -63,7 +63,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testGetAllCategory() {
+    void testGetAllCategory() {
        
         List<Category> categoryList = new ArrayList<>();
         Category category1 = new Category();
@@ -86,7 +86,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testGetCategory_Success() {
+    void testGetCategory_Success() {
         
         Category category = new Category();
         category.setCategoryId(1L);
@@ -103,7 +103,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testGetCategory_CategoryNotFound() {
+    void testGetCategory_CategoryNotFound() {
        
         when(categoryRepository.existsById(1L)).thenReturn(false);
 
@@ -113,7 +113,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testUpdateCategory_Success() {
+    void testUpdateCategory_Success() {
         
         Category categoryToUpdate = new Category();
         categoryToUpdate.setCategoryId(1L);
@@ -130,7 +130,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testUpdateCategory_CategoryNotFound() {
+    void testUpdateCategory_CategoryNotFound() {
        
         Category categoryToUpdate = new Category();
         categoryToUpdate.setCategoryId(1L);
@@ -144,7 +144,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testDeleteCategory_Success() {
+    void testDeleteCategory_Success() {
        
         when(categoryRepository.existsById(1L)).thenReturn(true);
 
@@ -154,7 +154,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void testDeleteCategory_CategoryNotFound() {
+    void testDeleteCategory_CategoryNotFound() {
         
         when(categoryRepository.existsById(1L)).thenReturn(false);
 

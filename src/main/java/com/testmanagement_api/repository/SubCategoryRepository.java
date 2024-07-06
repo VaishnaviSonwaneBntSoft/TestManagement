@@ -1,4 +1,4 @@
-package com.testmanagement_api.dao;
+package com.testmanagement_api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -7,8 +7,8 @@ import com.testmanagement_api.entity.Subcategory;
 
 public interface SubCategoryRepository extends JpaRepository<Subcategory , Long>{
     
-    boolean existsBysubCategoryName(String subCategoryName);
+    boolean existsBySubCategoryName(String subCategoryName);
 
-    @Query("SELECT c FROM Subcategory c WHERE c.subCategoryName = :subcatgeoryName")
-    Subcategory getOneBysubCategoryName(String subcatgeoryName);
+    @Query("SELECT c FROM Subcategory c WHERE c.subCategoryName = :subCategoryName")
+    Subcategory getOneBySubCategoryName(String subCategoryName);
 }

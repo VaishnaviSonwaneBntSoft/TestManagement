@@ -13,11 +13,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.testmanagement_api.dao.SubCategoryRepository;
-import com.testmanagement_api.dao.QuestionRepository;
+
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.entity.Subcategory;
 import com.testmanagement_api.entity.QuestionModel;
@@ -27,6 +25,8 @@ import com.testmanagement_api.exceptionhandler.DuplicateEntries;
 
 import com.testmanagement_api.exceptionhandler.DuplicatedDataException;
 import com.testmanagement_api.exceptionhandler.SubcategoryNotFoundException;
+import com.testmanagement_api.repository.QuestionRepository;
+import com.testmanagement_api.repository.SubCategoryRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,91 +34,82 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class QuestionService {
 
-    @Autowired
-    QuestionRepository tRepository;
+    private QuestionRepository tRepository;
 
-    @Autowired
-    SubCategoryRepository subCategoryRepository;
+    private SubCategoryRepository subCategoryRepository;
 
-    @Autowired
-    SubCategoryService subCategoryService;
+    private SubCategoryService subCategoryService;
 
-    @Autowired
-    CategoryService categoryService;
+    private CategoryService categoryService;
 
-    public QuestionModel CreateMcqQuestion(QuestionModel model)
-    {
-        boolean result = tRepository.existsById(model.getQuestion_id());
-        if(!result && tRepository.existsByQuestion(model.getQuestion()))
-        {
-            if(subCategoryRepository.existsById(model.getSubcategory().getSubcategoryId()))
-            {
-                return tRepository.save(model);
+    
 
-            }else{
-                SubcategoryNotFoundException exception = new SubcategoryNotFoundException("Subcategory Not Found Which Foregin In Use");
-                throw exception;
-            }
-        }else{
-            log.error("Data Already Present By Given Id");
-            DuplicatedDataException exception = new DuplicatedDataException("This Question Already Present In Database");
-            throw exception;
-        }
+    public QuestionService(QuestionRepository tRepository, SubCategoryRepository subCategoryRepository,
+            SubCategoryService subCategoryService, CategoryService categoryService) {
+
+        this.tRepository = tRepository;
+        this.subCategoryRepository = subCategoryRepository;
+        this.subCategoryService = subCategoryService;
+        this.categoryService = categoryService;
     }
 
-    public List<QuestionModel> GetAllQuestionsData()
-    {   
-        log.info("Fetching all questions data");
-        return tRepository.findAll();
-    }
-
-    public QuestionModel updateQuestionData(QuestionModel model , long question_id)
+    public QuestionModel createMcqQuestion(QuestionModel model)
     {
-        boolean result = tRepository.existsById(question_id);
-        if(result)
+        boolean result = tRepository.existsById(model.getQuestionId());
+        if(!result && !tRepository.existsByQuestion(model.getQuestion()))
         {
             if(subCategoryRepository.existsById(model.getSubcategory().getSubcategoryId()))
-            {
                 return tRepository.save(model);
-            }else{
-                SubcategoryNotFoundException exception = new SubcategoryNotFoundException("Subcategory Not Found Which Foregin In Use");
-                throw exception;
-            }
-        }else{
+                
+            throw new SubcategoryNotFoundException("Subcategory Not Found Which Foreign In Use");
             
-            DataNotFoundException exception = new DataNotFoundException("Data Not Found For Provided ID");
-            throw exception;
         }
+        log.error("Data Already Present By Given Id");
+        throw new DuplicatedDataException("This Question Already Present In Database");
     }
 
-    public Optional<QuestionModel> getQuestionDataById(long question_id)
-    {
-
-        boolean result = tRepository.existsById(question_id);
-        if(result)
+    public List<QuestionModel> getAllQuestionsData()
+    {   
+        List<QuestionModel> questionModels = tRepository.findAll();
+        if(questionModels!=null)
         {
-            return tRepository.findById(question_id);
+            log.info("Fetched all questions data");
+            return questionModels;
+        }
+        throw new DataNotFoundException("No Data Found");
+    }
+
+    public QuestionModel updateQuestionData(QuestionModel model , long questionId)
+    {
+        if(tRepository.existsById(questionId))
+        {
+            if(subCategoryRepository.existsById(model.getSubcategory().getSubcategoryId()))
+                return tRepository.save(model);
+                
+            throw new SubcategoryNotFoundException("Subcategory Not Found Which Foreign In Use");
+        }
+        throw new DataNotFoundException("Data Not Found For Provided Id");
+    }
+
+    public Optional<QuestionModel> getQuestionDataById(long questionId)
+    {
+        if(tRepository.existsById(questionId))
+            return tRepository.findById(questionId);
+        
+        log.error("Data Not Found For Provided Id");
+        throw new DataNotFoundException("Data Not Found For Provided ID");
+    }
+
+    public void deleteQuestionDataById(long questionId)
+    {
+        if(tRepository.existsById(questionId))
+        {     tRepository.deleteById(questionId);
         }else{
             log.error("Data Not Found For Provided ID");
-            DataNotFoundException exception = new DataNotFoundException("Data Not Found For Provided ID");
-            throw exception;
+        throw new DataNotFoundException("Data Not Found For Provided ID");
         }
     }
 
-    public void deleteQuestionDataById(long question_id)
-    {
-        boolean result = tRepository.existsById(question_id);
-        if(result)
-        {
-            tRepository.deleteById(question_id);
-        }else{
-            log.error("Data Not Found For Provided ID");
-            DataNotFoundException exception = new DataNotFoundException("Data Not Found For Provided ID");
-            throw exception;
-        }
-    }
-
-   
 
     public void uploadBulkQuestions(MultipartFile multipartFile) throws EncryptedDocumentException, IOException
     {
@@ -128,8 +119,8 @@ public class QuestionService {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
 
-            List<String> duplicateQuestion = new ArrayList<String>();
-            List<QuestionModel> questions = new ArrayList<QuestionModel>();
+            List<String> duplicateQuestion = new ArrayList<>();
+            List<QuestionModel> questions = new ArrayList<>();
            
             while (rows.hasNext()) {
                 Row currentRow = rows.next();
@@ -157,11 +148,11 @@ public class QuestionService {
                             {
                                 subcategory.setCategory(returnedCategory);
                                 returnedCategoryId=returnedCategory.getCategoryId();
-                                log.info("Id of Catgeory "+returnedCategoryId);
-                                
+                                log.info("Id of Category "+returnedCategoryId); 
+                            }else{
+                                throw new CategoryNotFoundException("Given Category Not Present");
                             }
-                            else
-                                 new CategoryNotFoundException("Given Category Not Present");
+                            
                                 
                         break;
                         case 2:
@@ -169,39 +160,39 @@ public class QuestionService {
                             if(returnedSubcategory!=null)
                                 testModel.setSubcategory(returnedSubcategory);
                             else
-                                throw new SubcategoryNotFoundException("Not Found Subcategory with foriegn key of given category");
+                                throw new SubcategoryNotFoundException("Not Found Subcategory with foreign key of given category");
 
                         break;
                         case 3:
                             testModel.setQuestion(currentCell.getStringCellValue());
                             break;
                         case 4:
-                            testModel.setOption_one(currentCell.getStringCellValue());
+                            testModel.setOptionOne(currentCell.getStringCellValue());
                             break;
                         case 5:
-                            testModel.setOption_two(currentCell.getStringCellValue());
+                            testModel.setOptionTwo(currentCell.getStringCellValue());
                             break;
                         case 6:
-                            testModel.setOption_three(currentCell.getStringCellValue());
+                            testModel.setOptionThree(currentCell.getStringCellValue());
                             break;
                         case 7:
-                            testModel.setOption_four(currentCell.getStringCellValue());
+                            testModel.setOptionFour(currentCell.getStringCellValue());
                             break;
                         case 8:
-                            testModel.setCorrect_option(currentCell.getStringCellValue());
+                            testModel.setCorrectOption(currentCell.getStringCellValue());
                             break;
                             case 9:
                             if (currentCell.getCellType() == CellType.NUMERIC) {
-                                testModel.setPositive_mark(String.valueOf(currentCell.getNumericCellValue()));
+                                testModel.setPositiveMark(String.valueOf(currentCell.getNumericCellValue()));
                             } else if (currentCell.getCellType() == CellType.STRING) {
-                                testModel.setPositive_mark(currentCell.getStringCellValue());
+                                testModel.setPositiveMark(currentCell.getStringCellValue());
                             }
                             break;
                         case 10:
                             if (currentCell.getCellType() == CellType.NUMERIC) {
-                                testModel.setNegative_mark(String.valueOf(currentCell.getNumericCellValue()));
+                                testModel.setNegativeMark(String.valueOf(currentCell.getNumericCellValue()));
                             } else if (currentCell.getCellType() == CellType.STRING) {
-                                testModel.setNegative_mark(currentCell.getStringCellValue());
+                                testModel.setNegativeMark(currentCell.getStringCellValue());
                             }
                             break;
                         default:
@@ -215,7 +206,7 @@ public class QuestionService {
                     questions.add(testModel);
         }
         workbook.close();
-        if(duplicateQuestion.size()==0)
+        if(duplicateQuestion.isEmpty())
             tRepository.saveAll(questions);
         else
             throw new DuplicateEntries(duplicateQuestion);

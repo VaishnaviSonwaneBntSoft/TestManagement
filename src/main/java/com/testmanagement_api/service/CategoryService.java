@@ -1,78 +1,71 @@
 package com.testmanagement_api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import com.testmanagement_api.dao.CategoryRepository;
+
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.exceptionhandler.DataNotFoundException;
 import com.testmanagement_api.exceptionhandler.DuplicateCategoryEntry;
+import com.testmanagement_api.repository.CategoryRepository;
 
 @Service
 public class CategoryService {
 
-    @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
+    
+
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     public Category createCategory(Category category)
     {
-        boolean result = categoryRepository.existsBycategoryName(category.getCategoryName());
-        if(!result)
-        {
-            System.out.println(category);
+        if(!categoryRepository.existsByCategoryName(category.getCategoryName()))
             return categoryRepository.save(category);
-        }else{
-            DuplicateCategoryEntry duplicateCategoryEntry = new DuplicateCategoryEntry("Category Already Present ");
-            throw duplicateCategoryEntry;
-        }
 
+        throw new DuplicateCategoryEntry("Category Already Present ");
     }
 
     public List<Category> getAllCategory()
     {
-        return categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAll();
+        if(!categories.isEmpty())
+            return categories;
+        
+        throw new DataNotFoundException("Data Not Found");
     }
 
-    public Optional<Category> getCategory(long category_id)
+    public Optional<Category> getCategory(long categoryId)
     {
-        boolean result = categoryRepository.existsById(category_id);
-        if(result)
-        {
-            return categoryRepository.findById(category_id);
-        }else{
-            DataNotFoundException exception = new DataNotFoundException("Category Not Found By Provided Id");
-            throw exception;
-        }
+        if(categoryRepository.existsById(categoryId))
+            return categoryRepository.findById(categoryId);
+
+        throw new DataNotFoundException("Category Not Found By Provided Id");
     }
 
-    public Category updateCategory(Category category , long category_id)
+    public Category updateCategory(Category category , long categoryId)
     {
-        if(categoryRepository.existsById(category_id))
-        {
+        if(categoryRepository.existsById(categoryId))
             return categoryRepository.save(category);
-        }else{
-            DataNotFoundException exception = new DataNotFoundException("Category Not Found By Provided Id");
-            throw exception;
-        }
+
+        throw new DataNotFoundException("Category Not Found By Provided Id");
     }
 
-    public void deleteCategory(long category_id)
+    public void deleteCategory(long categoryId)
     {
-        if(categoryRepository.existsById(category_id))
-        {
-            categoryRepository.deleteById(category_id);
+        if(categoryRepository.existsById(categoryId))
+        {   categoryRepository.deleteById(categoryId);
         }else{
-            DataNotFoundException exception = new DataNotFoundException("Category Not Found By Provided Id");
-            throw exception;
+        throw new DataNotFoundException("Category Not Found By Provided Id");
         }
     }
 
     public Category getCategoryInstance(String categoryName)
     {
-        if(categoryRepository.existsBycategoryName(categoryName))
+        if(categoryRepository.existsByCategoryName(categoryName))
             return categoryRepository.getOneByName(categoryName);
         else
-        return null;
+            return null;
     }
 }

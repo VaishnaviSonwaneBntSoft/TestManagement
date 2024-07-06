@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +23,9 @@ import lombok.NoArgsConstructor;
 public class QuestionModel {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "testinfo_seq")
-    @SequenceGenerator(name = "testinfo_seq", sequenceName = "testinfo_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    private long Question_id;
+    private long questionId;
 
     @ManyToOne
     @JoinColumn(name = "subcategory_id", referencedColumnName = "subcategory_id")
@@ -37,25 +35,25 @@ public class QuestionModel {
     private String question;
 
     @Column(name = "option_one")
-    private String Option_one;
+    private String optionOne;
 
     @Column(name = "option_two")
-    private String Option_two;
+    private String optionTwo;
 
     @Column(name = "option_three")
-    private String Option_three;
+    private String optionThree;
 
     @Column(name = "option_four")
-    private String Option_four;
+    private String optionFour;
 
     @Column(name = "correct_option")
-    private String Correct_option;
+    private String correctOption;
 
     @Column(name = "positive_mark")
-    private String Positive_mark;
+    private String positiveMark;
 
     @Column(name = "negative_mark")
-    private String Negative_mark;
+    private String negativeMark;
     
     
 }

@@ -36,5 +36,5 @@ public class Subcategory {
     private String subCategoryName;
 
     @Column(name = "subcategory_description")
-    private String subCategoryDesciption;
+    private String subCategoryDescription;
 }

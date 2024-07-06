@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +25,8 @@ import com.testmanagement_api.exceptionhandler.DuplicateEntries;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.QuestionService;
 
-public class QuestionControllerTestCases {
+@SpringBootTest
+class QuestionControllerTestCase {
 
     @Mock
     private QuestionService tService;
@@ -38,13 +40,13 @@ public class QuestionControllerTestCases {
     }
     
     @Test
-    public void testCreateMcqQuestion() {
+    void testCreateMcqQuestion() {
        
         QuestionModel testModel = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Sample question");
 
-        ResponseEntity<SuccessResponse> responseEntity = controller.CreateMcqQuestion(testModel);
+        ResponseEntity<SuccessResponse> responseEntity = controller.createMcqQuestion(testModel);
 
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
 
@@ -54,43 +56,43 @@ public class QuestionControllerTestCases {
     }
 
     @Test
-    public void testGetAllQuestionsData() {
+    void testGetAllQuestionsData() {
        
         List<QuestionModel> testDataList = new ArrayList<>();
         QuestionModel testModel = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Sample question");
 
         QuestionModel testModel2 = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Sample question");
 
         testDataList.add(testModel2);
         testDataList.add(testModel);
 
        
-        when(tService.GetAllQuestionsData()).thenReturn(testDataList);
+        when(tService.getAllQuestionsData()).thenReturn(testDataList);
 
       
-        ResponseEntity<SuccessResponse> responseEntity = controller.GetAllQuestionsData();
+        ResponseEntity<SuccessResponse> responseEntity = controller.getAllQuestionsData();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("All Data Retrived", responseEntity.getBody().getMessage());
+        assertEquals("All Data Retrieved", responseEntity.getBody().getMessage());
         assertEquals(testDataList, responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testUpdateQuestionData() {
+    void testUpdateQuestionData() {
        
         QuestionModel testModel = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Updated question");
 
         QuestionModel testModel2 = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Sample question");
 
-        when(tService.updateQuestionData(testModel2 , testModel.getQuestion_id())).thenReturn(testModel);
+        when(tService.updateQuestionData(testModel2 , testModel.getQuestionId())).thenReturn(testModel);
 
         ResponseEntity<SuccessResponse> responseEntity = controller.updateQuestionData(testModel, 1L);
 
@@ -100,28 +102,28 @@ public class QuestionControllerTestCases {
     }
 
     @Test
-    public void testGetQuestionDataById() {
+    void testGetQuestionDataById() {
 
         QuestionModel testModel = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Updated question");
 
-        when(tService.getQuestionDataById(testModel.getQuestion_id())).thenReturn(Optional.of(testModel));
+        when(tService.getQuestionDataById(testModel.getQuestionId())).thenReturn(Optional.of(testModel));
 
         ResponseEntity<SuccessResponse> responseEntity = controller.getQuestionDataById(1L);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Data Retrived by Id", responseEntity.getBody().getMessage());
+        assertEquals("Data Retrieved by Id", responseEntity.getBody().getMessage());
     }
 
     @Test
-    public void testDeleteQuestionDataById() {
+    void testDeleteQuestionDataById() {
         
         QuestionModel testModel = new QuestionModel();
-        testModel.setQuestion_id(1L);
+        testModel.setQuestionId(1L);
         testModel.setQuestion("Updated question");
 
-        ResponseEntity<SuccessResponse> responseEntity = controller.deleteQuestion(testModel.getQuestion_id());
+        ResponseEntity<SuccessResponse> responseEntity = controller.deleteQuestion(testModel.getQuestionId());
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Question Data Deleted", responseEntity.getBody().getMessage());
@@ -129,7 +131,7 @@ public class QuestionControllerTestCases {
 
 
     @Test
-    public void testUploadBulkQuestions_Success() throws IOException {
+    void testUploadBulkQuestions_Success() throws IOException {
      
         MultipartFile mockFile = mock(MultipartFile.class);
         SuccessResponse expectedResponse = new SuccessResponse("Question Data Uploaded", 200, null);
@@ -147,7 +149,7 @@ public class QuestionControllerTestCases {
     }
 
     @Test
-    public void testUploadBulkQuestions_DuplicateEntries() throws IOException {
+    void testUploadBulkQuestions_DuplicateEntries() throws IOException {
         
         MultipartFile mockFile = mock(MultipartFile.class);
         List<String> duplicateList = Arrays.asList("Question 1", "Question 2"); 
@@ -167,7 +169,7 @@ public class QuestionControllerTestCases {
     }
 
     @Test
-    public void testUploadBulkQuestions_Exception() throws IOException {
+    void testUploadBulkQuestions_Exception() throws IOException {
         
         MultipartFile mockFile = mock(MultipartFile.class);
         RuntimeException exception = new RuntimeException("Some error message");

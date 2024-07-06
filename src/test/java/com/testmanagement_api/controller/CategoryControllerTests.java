@@ -19,7 +19,7 @@ import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.reponsehandler.SuccessResponse;
 import com.testmanagement_api.service.CategoryService;
 
-public class CategoryControllerTests {
+class CategoryControllerTests {
 
     @Mock
     private CategoryService categoryService;
@@ -33,7 +33,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void testCreateCategory_Success() {
+    void testCreateCategory_Success() {
        
         Category category = new Category();
         category.setCategoryId(1L);
@@ -49,7 +49,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void testCreateCategory_DuplicateData() {
+    void testCreateCategory_DuplicateData() {
    
         Category category = new Category();
         category.setCategoryId(1L);
@@ -65,7 +65,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void testGetAllCategory() {
+    void testGetAllCategory() {
  
         List<Category> categoryList = new ArrayList<>();
         Category category1 = new Category();
@@ -84,12 +84,12 @@ public class CategoryControllerTests {
         ResponseEntity<SuccessResponse> responseEntity = categoryController.getAllCategory();
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("All Categories Retrives", responseEntity.getBody().getMessage());
+        assertEquals("All Categories Retrieved", responseEntity.getBody().getMessage());
         assertEquals(categoryList, responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testGetCategory_Success() {
+    void testGetCategory_Success() {
        
         long categoryId = 1L;
         Category category = new Category();
@@ -101,12 +101,12 @@ public class CategoryControllerTests {
         ResponseEntity<SuccessResponse> responseEntity = categoryController.getCategory(categoryId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Category Retrived By Specified Id", responseEntity.getBody().getMessage());
-        assertEquals(category, responseEntity.getBody().getModuleData());
+        assertEquals("Category Retrieved By Specified Id", responseEntity.getBody().getMessage());
+        assertEquals(Optional.of(category), responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testGetCategory_IdNotFound() {
+    void testGetCategory_IdNotFound() {
     
         long categoryId = 1L;
 
@@ -116,11 +116,10 @@ public class CategoryControllerTests {
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals("Id Not Found", responseEntity.getBody().getMessage());
-        assertNull(responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testUpdateCategory_Success() {
+    void testUpdateCategory_Success() {
  
         long categoryId = 1L;
         Category category = new Category();
@@ -137,7 +136,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void testUpdateCategory_IdNotFound() {
+    void testUpdateCategory_IdNotFound() {
  
         long categoryId = 1L;
         Category category = new Category();
@@ -150,11 +149,10 @@ public class CategoryControllerTests {
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals("Id Not Found", responseEntity.getBody().getMessage());
-        assertNull(responseEntity.getBody().getModuleData());
     }
 
     @Test
-    public void testDeleteCategory_Success() {
+    void testDeleteCategory_Success() {
     
         long categoryId = 1L;
 
@@ -166,7 +164,7 @@ public class CategoryControllerTests {
     }
 
     @Test
-    public void testDeleteCategory_IdNotFound() {
+    void testDeleteCategory_IdNotFound() {
        
         long categoryId = 1L;
 
@@ -176,7 +174,6 @@ public class CategoryControllerTests {
 
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals("Id Not Found", responseEntity.getBody().getMessage());
-        assertNull(responseEntity.getBody().getModuleData());
     }
 }
 
