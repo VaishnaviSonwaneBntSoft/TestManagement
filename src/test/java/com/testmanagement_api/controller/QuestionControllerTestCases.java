@@ -21,8 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.testmanagement_api.entity.QuestionModel;
-import com.testmanagement_api.exceptionhandler.DuplicateEntries;
-import com.testmanagement_api.reponsehandler.SuccessResponse;
+import com.testmanagement_api.exception.DuplicateEntries;
+import com.testmanagement_api.response.SuccessResponse;
 import com.testmanagement_api.service.QuestionService;
 
 @SpringBootTest

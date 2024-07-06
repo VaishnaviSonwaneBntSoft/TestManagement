@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.testmanagement_api.entity.Subcategory;
-import com.testmanagement_api.reponsehandler.SuccessResponse;
+import com.testmanagement_api.response.SuccessResponse;
 import com.testmanagement_api.service.SubCategoryService;
 
 class SubCategoryControllerTests {

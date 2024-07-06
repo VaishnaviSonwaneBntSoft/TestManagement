@@ -1,4 +1,4 @@
-package com.testmanagement_api.exceptionhandler;
+package com.testmanagement_api.exception;
 
 public class CategoryNotFoundException extends RuntimeException{
     

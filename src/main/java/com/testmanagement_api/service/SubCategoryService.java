@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.testmanagement_api.entity.Subcategory;
-import com.testmanagement_api.exceptionhandler.CategoryNotFoundException;
-import com.testmanagement_api.exceptionhandler.DataNotFoundException;
-import com.testmanagement_api.exceptionhandler.DuplicateSubCategoryEntry;
+import com.testmanagement_api.exception.CategoryNotFoundException;
+import com.testmanagement_api.exception.DataNotFoundException;
+import com.testmanagement_api.exception.DuplicateSubCategoryEntry;
 import com.testmanagement_api.repository.CategoryRepository;
 import com.testmanagement_api.repository.SubCategoryRepository;
 

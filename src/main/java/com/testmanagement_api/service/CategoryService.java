@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.testmanagement_api.entity.Category;
-import com.testmanagement_api.exceptionhandler.DataNotFoundException;
-import com.testmanagement_api.exceptionhandler.DuplicateCategoryEntry;
+import com.testmanagement_api.exception.DataNotFoundException;
+import com.testmanagement_api.exception.DuplicateCategoryEntry;
 import com.testmanagement_api.repository.CategoryRepository;
 
 @Service

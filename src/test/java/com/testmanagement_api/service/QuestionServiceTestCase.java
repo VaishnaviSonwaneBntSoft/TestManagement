@@ -20,12 +20,12 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import com.testmanagement_api.entity.Category;
 import com.testmanagement_api.entity.Subcategory;
+import com.testmanagement_api.exception.CategoryNotFoundException;
+import com.testmanagement_api.exception.DataNotFoundException;
+import com.testmanagement_api.exception.DuplicateEntries;
+import com.testmanagement_api.exception.DuplicatedDataException;
+import com.testmanagement_api.exception.SubcategoryNotFoundException;
 import com.testmanagement_api.entity.QuestionModel;
-import com.testmanagement_api.exceptionhandler.CategoryNotFoundException;
-import com.testmanagement_api.exceptionhandler.DataNotFoundException;
-import com.testmanagement_api.exceptionhandler.DuplicateEntries;
-import com.testmanagement_api.exceptionhandler.DuplicatedDataException;
-import com.testmanagement_api.exceptionhandler.SubcategoryNotFoundException;
 import com.testmanagement_api.repository.QuestionRepository;
 import com.testmanagement_api.repository.SubCategoryRepository;
 

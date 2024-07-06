@@ -3,7 +3,7 @@ package com.testmanagement_api.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.testmanagement_api.entity.Subcategory;
-import com.testmanagement_api.reponsehandler.SuccessResponse;
+import com.testmanagement_api.response.SuccessResponse;
 import com.testmanagement_api.service.SubCategoryService;
 import java.util.List;
 import java.util.Optional;

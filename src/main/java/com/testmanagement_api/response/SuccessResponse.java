@@ -1,4 +1,4 @@
-package com.testmanagement_api.reponsehandler;
+package com.testmanagement_api.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
