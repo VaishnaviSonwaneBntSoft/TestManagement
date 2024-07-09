@@ -81,10 +81,24 @@ public class QuestionServiceImpl implements QuestionService{
 
     public QuestionModel updateQuestionData(QuestionModel model , long questionId)
     {
-        if(tRepository.existsById(questionId))
-        {
+        QuestionModel existingQuestionModel = tRepository.getQuestionInstance(questionId);
+
+        if(existingQuestionModel!=null)
+        { 
             if(subCategoryRepository.existsById(model.getSubcategory().getSubcategoryId()))
-                return tRepository.save(model);
+            {
+              existingQuestionModel.setSubcategory(model.getSubcategory());
+              existingQuestionModel.setQuestion(model.getQuestion());
+              existingQuestionModel.setOptionOne(model.getOptionOne());
+              existingQuestionModel.setOptionTwo(model.getOptionTwo());
+              existingQuestionModel.setOptionThree(model.getOptionThree());
+              existingQuestionModel.setOptionFour(model.getOptionFour());
+              existingQuestionModel.setCorrectOption(model.getCorrectOption());
+              existingQuestionModel.setPositiveMark(model.getPositiveMark());
+              existingQuestionModel.setNegativeMark(model.getNegativeMark());
+
+               return tRepository.save(existingQuestionModel);
+            }
                 
             throw new SubcategoryNotFoundException("Subcategory Not Found Which Foreign In Use");
         }

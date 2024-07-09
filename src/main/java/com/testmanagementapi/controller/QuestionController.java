@@ -54,6 +54,7 @@ public class QuestionController {
   @PutMapping("/{question-id}")
   public ResponseEntity<SuccessResponse> updateQuestionData(@Valid @RequestBody QuestionModel model,
       @PathVariable("question-id") long questionId) {
+
     QuestionModel model2 = questionService.updateQuestionData(model, questionId);
     SuccessResponse sResponse = new SuccessResponse("Question Data Updated", 200, model2);
     return new ResponseEntity<>(sResponse, HttpStatus.OK);
@@ -69,7 +70,7 @@ public class QuestionController {
   @DeleteMapping("/{question-id}")
   public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("question-id") long questionId) {
     questionService.deleteQuestionDataById(questionId);
-    SuccessResponse successResponse = new SuccessResponse("Question Data Deleted", 204, null);
+    SuccessResponse successResponse = new SuccessResponse("Question Data Deleted", 200, null);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
