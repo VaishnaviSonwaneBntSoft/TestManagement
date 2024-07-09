@@ -4,9 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testmanagementapi.entity.Subcategory;
 import com.testmanagementapi.response.SuccessResponse;
 import com.testmanagementapi.service.impl.SubCategoryServiceImpl;
-
 import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -46,24 +44,24 @@ public class SubCategoryController {
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/{SubCategory-id}")
-  public ResponseEntity<SuccessResponse> getSubCategory(@PathVariable("SubCategory-id") long subCategoryId) {
+  @GetMapping("/{subcategory-id}")
+  public ResponseEntity<SuccessResponse> getSubCategory(@PathVariable("subcategory-id") long subCategoryId) {
     Optional<Subcategory> optionalSubcategory = subCategoryService.getSubCategory(subCategoryId);
     SuccessResponse successResponse = new SuccessResponse("Subcategory Data Retrieved", 200, optionalSubcategory);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @PutMapping("/{SubCategory-id}")
+  @PutMapping("/{subcategory-id}")
   public ResponseEntity<SuccessResponse> updateSubCategory(@Valid @RequestBody Subcategory subcategory,
-      @PathVariable("SubCategory-id") long subCategoryId) {
+      @PathVariable("subcategory-id") long subCategoryId) {
 
     Subcategory updatesSubcategory = subCategoryService.updateSubcategory(subcategory, subCategoryId);
     SuccessResponse successResponse = new SuccessResponse("Subcategory Data Updated", 200, updatesSubcategory);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @DeleteMapping("/{SubCategory-id}")
-  public ResponseEntity<SuccessResponse> deleteSubCategory(@PathVariable("SubCategory-id") long subCategoryId) {
+  @DeleteMapping("/{subcategory-id}")
+  public ResponseEntity<SuccessResponse> deleteSubCategory(@PathVariable("subcategory-id") long subCategoryId) {
     subCategoryService.deleteSubcategory(subCategoryId);
     SuccessResponse successResponse = new SuccessResponse("Subcategory Data deleted", 200, null);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);

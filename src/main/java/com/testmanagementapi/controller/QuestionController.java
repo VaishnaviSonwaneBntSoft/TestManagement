@@ -2,7 +2,6 @@ package com.testmanagementapi.controller;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.apache.poi.EncryptedDocumentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.testmanagementapi.entity.QuestionModel;
 import com.testmanagementapi.response.SuccessResponse;
 import com.testmanagementapi.service.impl.QuestionServiceImpl;
-
 import jakarta.validation.Valid;
-
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,23 +51,23 @@ public class QuestionController {
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @PutMapping("/{Question-id}")
+  @PutMapping("/{question-id}")
   public ResponseEntity<SuccessResponse> updateQuestionData(@Valid @RequestBody QuestionModel model,
-      @PathVariable("Question-id") long questionId) {
+      @PathVariable("question-id") long questionId) {
     QuestionModel model2 = questionService.updateQuestionData(model, questionId);
     SuccessResponse sResponse = new SuccessResponse("Question Data Updated", 200, model2);
     return new ResponseEntity<>(sResponse, HttpStatus.OK);
   }
 
-  @GetMapping("/{Question-id}")
-  public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("Question-id") long questionId) {
+  @GetMapping("/{question-id}")
+  public ResponseEntity<SuccessResponse> getQuestionDataById(@PathVariable("question-id") long questionId) {
     Optional<QuestionModel> model = questionService.getQuestionDataById(questionId);
     SuccessResponse successResponse = new SuccessResponse("Data Retrieved by Id", 200, model);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);
   }
 
-  @DeleteMapping("/{Question-id}")
-  public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("Question-id") long questionId) {
+  @DeleteMapping("/{question-id}")
+  public ResponseEntity<SuccessResponse> deleteQuestion(@PathVariable("question-id") long questionId) {
     questionService.deleteQuestionDataById(questionId);
     SuccessResponse successResponse = new SuccessResponse("Question Data Deleted", 204, null);
     return new ResponseEntity<>(successResponse, HttpStatus.OK);

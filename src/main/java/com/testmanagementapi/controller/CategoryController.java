@@ -4,9 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.testmanagementapi.entity.Category;
 import com.testmanagementapi.response.SuccessResponse;
 import com.testmanagementapi.service.impl.CategoryServiceImpl;
-
 import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -47,8 +45,8 @@ public class CategoryController {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/{Category-id}")
-    public ResponseEntity<SuccessResponse> getCategory(@PathVariable("Category-id") long categoryId) {
+    @GetMapping("/{category-id}")
+    public ResponseEntity<SuccessResponse> getCategory(@PathVariable("category-id") long categoryId) {
 
         Optional<Category> optionalCategory = categoryService.getCategory(categoryId);
         SuccessResponse successResponse = new SuccessResponse("Category Retrieved By Specified Id", 200,
@@ -56,8 +54,8 @@ public class CategoryController {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    @PutMapping("/{Category-id}")
-    public ResponseEntity<SuccessResponse> putCategory(@PathVariable("Category-id") long categoryId,
+    @PutMapping("/{category-id}")
+    public ResponseEntity<SuccessResponse> putCategory(@PathVariable("category-id") long categoryId,
            @Valid @RequestBody Category category) {
 
         Category updatedCategory = categoryService.updateCategory(category, categoryId);
@@ -65,8 +63,8 @@ public class CategoryController {
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{Category-id}")
-    public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable("Category-id") long categoryId) {
+    @DeleteMapping("/{category-id}")
+    public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable("category-id") long categoryId) {
         categoryService.deleteCategory(categoryId);
         SuccessResponse successResponse = new SuccessResponse("Category Deleted By Specified Id", 200, null);
         return new ResponseEntity<>(successResponse, HttpStatus.OK);
